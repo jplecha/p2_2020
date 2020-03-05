@@ -47,6 +47,7 @@ TCola encolar(info_t nuevo, TCola cola){
 		else cola->ult = agregar;
 		cola->pri = agregar;
 	}
+  return cola;
 }
 
 
