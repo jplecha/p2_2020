@@ -1,10 +1,16 @@
 
+#include "../include/mapping.h"
+#include "../include/listaInfo.h"
+#include "../include/utils.h"
+
+#include <assert.h>
+#include <stdlib.h>
 // Representación de 'TMapping'.
 // Se debe definir en mappingInfo.cpp.
 // struct repMap;
 // Declaración del tipo 'TMapping'.
 struct repMap{
-
+ return null;
 }
 
 /*  Operaciones de TMapping */
@@ -47,5 +53,5 @@ double valor(nat clave, TMapping map){
   Devuelve 'map'.
  */
 TMapping desasociar(nat clave, TMapping map){
-  return null;  
+  return null;
 }

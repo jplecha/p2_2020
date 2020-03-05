@@ -2,7 +2,7 @@
 
 #include "../include/pilaInfo.h"
 #include "../include/listaInfo.h"
-#include "../include/Utils.h"
+#include "../include/utils.h"
 
 #include <assert.h>
 #include <stdlib.h>
