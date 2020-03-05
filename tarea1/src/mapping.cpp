@@ -44,7 +44,7 @@ bool esClave(nat clave, TMapping map){
   Precondición: esClave(clave, map)
  */
 double valor(nat clave, TMapping map){
-  return NULL;
+  return 0;
 }
 
 /*
