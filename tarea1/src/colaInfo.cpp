@@ -64,4 +64,5 @@ TCola desencolar(TCola c){
 		c->pri = NULL;
 		delete borrar;
 	}
+  return c;
 }
