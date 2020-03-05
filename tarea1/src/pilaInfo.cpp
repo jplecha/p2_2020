@@ -9,9 +9,9 @@
 
 struct repPila{
   TLista lst;
-}
+};
 
-TPila crearPila() {
+TPila crearPila(){
     TPila resultado= new repPila;
     (*resultado).lst=crearLista();
     return resultado
@@ -27,7 +27,7 @@ TPila apilar(info_t nuevo, TPila p){
 }
 
 info_t cima(TPila p){
-  return infoLista(longitud(p->lst),p->lst));
+  return infoLista(longitud(p->lst),p->lst);
 }
 
 TPila desapilar(TPila p){
