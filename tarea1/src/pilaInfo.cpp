@@ -14,7 +14,7 @@ struct repPila{
 TPila crearPila(){
     TPila resultado= new repPila;
     (*resultado).lst=crearLista();
-    return resultado
+    return resultado;
 }
 
 bool esVaciaPila(TPila p){

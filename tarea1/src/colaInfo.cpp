@@ -29,7 +29,7 @@ bool esVaciaCola(TCola cola){
 
 
 TCola encolar(info_t nuevo, TCola cola){
-  if (!es_vacio_avl(b)) {
+  if (!esVaciaCola(cola)) {
 		Nodo *agregar = new Nodo;
 		agregar->info = nuevo;
 		agregar->ant = NULL;
