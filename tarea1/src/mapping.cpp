@@ -10,7 +10,7 @@
 // struct repMap;
 // Declaración del tipo 'TMapping'.
 struct repMap{
- return null;
+ int a;
 }
 
 /*  Operaciones de TMapping */
@@ -19,7 +19,7 @@ struct repMap{
   Devuelve un elemento de tipo 'TMapping' vacío (sin elementos).
  */
 TMapping crearMapping(){
-  return null;
+  return NULL;
 }
 
 /*
@@ -29,14 +29,14 @@ TMapping crearMapping(){
   Devuelve 'map'.
  */
 TMapping asociar(nat clave, double valor, TMapping map){
-  return null;
+  return NULL;
 }
 
 /*
   Devuelve 'true' si y solo si 'clave' tiene un valor asociado en 'map'.
  */
 bool esClave(nat clave, TMapping map){
-  return null;
+  return NULL;
 }
 
 /*
@@ -44,7 +44,7 @@ bool esClave(nat clave, TMapping map){
   Precondición: esClave(clave, map)
  */
 double valor(nat clave, TMapping map){
-  return null;
+  return NULL;
 }
 
 /*
@@ -53,5 +53,5 @@ double valor(nat clave, TMapping map){
   Devuelve 'map'.
  */
 TMapping desasociar(nat clave, TMapping map){
-  return null;
+  return NULL;
 }
