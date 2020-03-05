@@ -29,25 +29,14 @@ bool esVaciaCola(TCola cola){
 
 
 TCola encolar(info_t nuevo, TCola cola){
-  if (!esVaciaCola(cola)) {
-		Nodo *agregar = new Nodo;
+  	Nodo *agregar = new Nodo;
 		agregar->info = nuevo;
 		agregar->ant = NULL;
 		agregar->sig = cola->pri;
 		if (cola->pri != NULL) cola->pri->ant = agregar;
 		else cola->ult = agregar;
 		cola->pri = agregar;
-	}
-	else{
-		Nodo *agregar = new Nodo;
-		agregar->info = NULL;
-		agregar->ant = NULL;
-		agregar->sig = cola->pri;
-		if (cola->pri != NULL) c->pri->ant = agregar;
-		else cola->ult = agregar;
-		cola->pri = agregar;
-	}
-  return cola;
+    return cola;
 }
 
 
