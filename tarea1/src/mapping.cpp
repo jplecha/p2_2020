@@ -9,9 +9,12 @@
 // Se debe definir en mappingInfo.cpp.
 // struct repMap;
 // Declaración del tipo 'TMapping'.
+
 struct repMap{
- int a;
-}
+ info_t *elem;
+ repMap *sig;
+ int cant;
+};
 
 /*  Operaciones de TMapping */
 
@@ -19,7 +22,11 @@ struct repMap{
   Devuelve un elemento de tipo 'TMapping' vacío (sin elementos).
  */
 TMapping crearMapping(){
-  return NULL;
+  TMapping map=new repMap;
+  map->elem=NULL;
+  map->sig=NULL;
+  map->cant=0;
+  return map;
 }
 
 /*
@@ -29,14 +36,27 @@ TMapping crearMapping(){
   Devuelve 'map'.
  */
 TMapping asociar(nat clave, double valor, TMapping map){
-  return NULL;
+    if(map->cant<MAX && !esClave(clave,map)){
+      TMapping aux=crearMapping();
+      info_t *nuevo=new info_t;
+      nuevo->natural=clave;
+      nuevo->real=valor;
+      aux->elem=nuevo;
+      aux->sig=map;
+      aux->cant=map->cant+1;
+      return aux;
+    }
+    else{
+      return map;
+    }
 }
 
 /*
   Devuelve 'true' si y solo si 'clave' tiene un valor asociado en 'map'.
  */
 bool esClave(nat clave, TMapping map){
-  return NULL;
+  while(map->elem!=NULL && map->elem->natural!=clave) map=map->sig;
+  return (map->elem!=NULL);
 }
 
 /*
@@ -44,7 +64,8 @@ bool esClave(nat clave, TMapping map){
   Precondición: esClave(clave, map)
  */
 double valor(nat clave, TMapping map){
-  return 0;
+  while(map->elem!=NULL && map->elem->natural!=clave) map=map->sig;
+  return map->elem->real;
 }
 
 /*
@@ -53,5 +74,24 @@ double valor(nat clave, TMapping map){
   Devuelve 'map'.
  */
 TMapping desasociar(nat clave, TMapping map){
-  return NULL;
+  TMapping inicio=map;
+  if(esClave(clave,map)){
+    if(map->cant==1){
+      map->elem=NULL;
+    }else{
+      if(map->elem->natural==clave){
+        map=map->sig;
+      }else{
+        while(map->sig->elem->natural!=clave){
+          map=map->sig;
+        }
+        map->sig=map->sig->sig;
+      }
+
+
+    }
+  }
+  inicio->cant--;
+
+  return inicio;
 }
