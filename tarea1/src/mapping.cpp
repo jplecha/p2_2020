@@ -21,7 +21,8 @@ struct repMap{
  */
 TMapping crearMapping(){
   TMapping map=new repMap;
-  map=crearLista();
+  map->lista=crearLista();
+  return map;
 }
 
 /*
@@ -32,29 +33,19 @@ TMapping crearMapping(){
  */
 TMapping asociar(nat clave, double valor, TMapping map){
     if(longitud(map->lista)<MAX && !esClave(clave,map)){
-      info_t *nuevo=new info_t;
-      nuevo->natural=clave;
-      nuevo->real=valor;
-      map->lista=insertar(longitud(map->lista),nuevo,map->lista);
-      return map;
+      info_t nuevo;
+      nuevo.natural=clave;
+      nuevo.real=valor;
+      map->lista=insertar(longitud(map->lista)+1,nuevo,map->lista);
     }
-    else{
-      return map;
-    }
+    return map;
 }
 
 /*
   Devuelve 'true' si y solo si 'clave' tiene un valor asociado en 'map'.
  */
 bool esClave(nat clave, TMapping map){
-  int i=1;
-  info_t aux;
-  bool bandera=false;
-  while(i<=longitud(map->lista) && !bandera){
-    aux=infoLista(i, map->lista);
-    if(aux->natural==clave) bandera=true;
-  }
-  return bandera;
+  return posNat(clave,map->lista);
 }
 
 /*
@@ -65,7 +56,7 @@ double valor(nat clave, TMapping map){
   info_t aux;
   nat pos=posNat(clave, map->lista);
   aux=infoLista(pos,map->lista);
-  return aux->real;
+  return aux.real;
 }
 
 /*
