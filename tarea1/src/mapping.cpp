@@ -11,9 +11,7 @@
 // Declaración del tipo 'TMapping'.
 
 struct repMap{
- info_t *elem;
- repMap *sig;
- int cant;
+  TLista lista;
 };
 
 /*  Operaciones de TMapping */
@@ -23,10 +21,7 @@ struct repMap{
  */
 TMapping crearMapping(){
   TMapping map=new repMap;
-  map->elem=NULL;
-  map->sig=NULL;
-  map->cant=0;
-  return map;
+  map=crearLista();
 }
 
 /*
@@ -36,15 +31,12 @@ TMapping crearMapping(){
   Devuelve 'map'.
  */
 TMapping asociar(nat clave, double valor, TMapping map){
-    if(map->cant<MAX && !esClave(clave,map)){
-      TMapping aux=crearMapping();
+    if(longitud(map->lista)<MAX && !esClave(clave,map)){
       info_t *nuevo=new info_t;
       nuevo->natural=clave;
       nuevo->real=valor;
-      aux->elem=nuevo;
-      aux->sig=map;
-      aux->cant=map->cant+1;
-      return aux;
+      map->lista=insertar(longitud(map->lista),nuevo,map->lista);
+      return map;
     }
     else{
       return map;
@@ -55,8 +47,14 @@ TMapping asociar(nat clave, double valor, TMapping map){
   Devuelve 'true' si y solo si 'clave' tiene un valor asociado en 'map'.
  */
 bool esClave(nat clave, TMapping map){
-  while(map->elem!=NULL && map->elem->natural!=clave) map=map->sig;
-  return (map->elem!=NULL);
+  int i=1;
+  info_t aux;
+  bool bandera=false;
+  while(i<=longitud(map->lista) && !bandera){
+    aux=infoLista(i, map->lista);
+    if(aux->natural==clave) bandera=true;
+  }
+  return bandera;
 }
 
 /*
@@ -64,8 +62,10 @@ bool esClave(nat clave, TMapping map){
   Precondición: esClave(clave, map)
  */
 double valor(nat clave, TMapping map){
-  while(map->elem!=NULL && map->elem->natural!=clave) map=map->sig;
-  return map->elem->real;
+  info_t aux;
+  nat pos=posNat(clave, map->lista);
+  aux=infoLista(pos,map->lista);
+  return aux->real;
 }
 
 /*
@@ -74,24 +74,9 @@ double valor(nat clave, TMapping map){
   Devuelve 'map'.
  */
 TMapping desasociar(nat clave, TMapping map){
-  TMapping inicio=map;
   if(esClave(clave,map)){
-    if(map->cant==1){
-      map->elem=NULL;
-    }else{
-      if(map->elem->natural==clave){
-        map=map->sig;
-      }else{
-        while(map->sig->elem->natural!=clave){
-          map=map->sig;
-        }
-        map->sig=map->sig->sig;
-      }
-
-
-    }
+      map->lista=remover(posNat(clave,map->lista),map->lista);
   }
-  inicio->cant--;
 
-  return inicio;
+  return map;
 }
