@@ -74,7 +74,7 @@ $(EJECUTABLE): $(ODIR)/$(PRINCIPAL).o $(OS)
 
 
 # casos de prueba
-CASOS = esVaciaPila apilar cima desapilar esVaciaCola encolar frente desencolar esClave asociar valor desasociar
+CASOS = 01 02 03 esVaciaPila apilar cima desapilar esVaciaCola encolar frente desencolar esClave asociar valor desasociar
 
 # cadena de archivos, con directorio y extensión
 INS=$(CASOS:%=$(TESTDIR)/%.in)
