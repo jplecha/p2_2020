@@ -1,0 +1,25 @@
+insertarAlFinal (7,2.5)
+insertarAlFinal (7,5.9)
+insertarAlFinal (3,5.4)
+insertarAlFinal (6,9.9)
+insertarAlFinal (8,1.5)
+insertarAlFinal (7,7.8)
+insertarAlFinal (1,6.3)
+insertarAlFinal (1,2.2)
+insertarAlFinal (5,1.9)
+esLocalizador
+localizadorEnCadena
+inicioCadena
+inicioCadena
+insertarAlFinal (2,1.3)
+esVaciaCadena
+insertarAlFinal (1,8.2)
+kesimo 2
+esLocalizador
+esFinalCadena
+cambiarTodos
+insertarSegmentoDespues (6,9.7) (7,7.1) (9,4.5) (9,6.6) (3,1.6) (7,1.1) (3,2.4)
+finalCadena
+esLocalizador
+finalCadena
+finalCadena

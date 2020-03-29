@@ -1,0 +1,16 @@
+==12682== Conditional jump or move depends on uninitialised value(s)
+==12682==    at 0x4039E6: cambiarTodos(unsigned int, unsigned int, repCadena*) (usoTads.cpp:148)
+==12682==    by 0x4022C4: main (principal.cpp:333)
+==12682== 
+principal: principal.cpp:288: int main(): Assertion `localizadorEnCadena(loc, cad)' failed.
+1>Insertado al final.
+2>Insertado al final.
+3>Insertado al final.
+4>Insertado al final.
+5>Insertado al final.
+6>Insertado al final.
+7>Insertado al final.
+8>Insertado al final.
+9>Insertado al final.
+10>Cambiados.
+11>timeout: the monitored command dumped core

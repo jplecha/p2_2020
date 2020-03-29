@@ -1,0 +1,25 @@
+insertarAlFinal (6,8.7)
+insertarAlFinal (2,5.4)
+insertarAlFinal (9,7.9)
+insertarAlFinal (3,5.2)
+insertarAlFinal (3,6.3)
+insertarAlFinal (3,5.3)
+insertarAlFinal (1,7.2)
+insertarAlFinal (5,4.9)
+insertarAlFinal (2,7.4)
+esLocalizador
+inicioCadena
+esVaciaCadena
+finalCadena
+finalCadena
+inicioCadena
+insertarSegmentoDespues (3,6.1) (9,8.3) (1,9.9) (6,7.6)
+finalCadena
+finalCadena
+menorEnCadena
+finalCadena
+finalCadena
+esLocalizador
+finalCadena
+finalCadena
+finalCadena

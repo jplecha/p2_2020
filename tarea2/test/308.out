@@ -1,0 +1,25 @@
+==12769== Conditional jump or move depends on uninitialised value(s)
+==12769==    at 0x4039E6: cambiarTodos(unsigned int, unsigned int, repCadena*) (usoTads.cpp:148)
+==12769==    by 0x4022C4: main (principal.cpp:333)
+==12769== 
+==12769== Conditional jump or move depends on uninitialised value(s)
+==12769==    at 0x4012F4: leerCadena() (principal.cpp:79)
+==12769==    by 0x401B06: main (principal.cpp:237)
+==12769== 
+principal: principal.cpp:327: int main(): Assertion `! hayNatsRepetidos(cad)' failed.
+1>Insertado al final.
+2>Insertado al final.
+3>Insertado al final.
+4>Insertado al final.
+5>Insertado al final.
+6>Insertado al final.
+7>Insertado al final.
+8>Insertado al final.
+9>Insertado al final.
+10>loc al final.
+11>Cambiados.
+12>loc al final.
+13>loc al final.
+14>loc pertenece a cad.
+15>Segmento insertado después de loc.
+16>timeout: the monitored command dumped core

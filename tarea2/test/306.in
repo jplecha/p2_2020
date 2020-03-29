@@ -1,0 +1,25 @@
+insertarAlFinal (5,3.8)
+insertarAlFinal (3,4.9)
+insertarAlFinal (9,3.9)
+insertarAlFinal (5,5.2)
+insertarAlFinal (5,1.3)
+insertarAlFinal (3,3.7)
+insertarAlFinal (4,5.2)
+insertarAlFinal (6,6.9)
+insertarAlFinal (7,4.6)
+esLocalizador
+finalCadena
+finalCadena
+imprimirCadena
+esLocalizador
+esLocalizador
+finalCadena
+insertarAlFinal (3,7.8)
+finalCadena
+insertarAlFinal (6,6.7)
+finalCadena
+ordenar
+insertarAntes (6,3.8)
+insertarSegmentoDespues (9,5.7) (4,3.7) (6,3.3) (6,1.6) (9,5.6) (3,9.9) (7,9.1) (6,1.7) (9,5.9) (4,1.8)
+copiarSegmento 12 12
+estaOrdenadaPorNaturales

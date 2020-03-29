@@ -1,0 +1,25 @@
+insertarAlFinal (7,4.1)
+insertarAlFinal (1,6.9)
+insertarAlFinal (9,5.9)
+insertarAlFinal (8,7.3)
+insertarAlFinal (4,7.7)
+insertarAlFinal (3,5.9)
+insertarAlFinal (8,5.2)
+insertarAlFinal (6,4.6)
+insertarAlFinal (2,2.7)
+finalCadena
+kesimo 4
+kesimo 5
+esLocalizador
+inicioCadena
+esLocalizador
+insertarAlFinal (7,3.5)
+esFinalCadena
+finalCadena
+imprimirCadena
+copiarSegmento 1 1
+precedeEnCadena
+ordenar
+insertarAntes (4,9.1)
+finalCadena
+kesimo 3

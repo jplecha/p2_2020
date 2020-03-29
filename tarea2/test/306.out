@@ -1,0 +1,22 @@
+principal: principal.cpp:327: int main(): Assertion `! hayNatsRepetidos(cad)' failed.
+1>Insertado al final.
+2>Insertado al final.
+3>Insertado al final.
+4>Insertado al final.
+5>Insertado al final.
+6>Insertado al final.
+7>Insertado al final.
+8>Insertado al final.
+9>Insertado al final.
+10>loc no válido.
+11>loc al final.
+12>loc al final.
+13>(5,3.80)(3,4.90)(9,3.90)(5,5.20)(5,1.30)(3,3.70)(4,5.20)(6,6.90)(7,4.60)
+14>loc válido.
+15>loc válido.
+16>loc al final.
+17>Insertado al final.
+18>loc al final.
+19>Insertado al final.
+20>loc al final.
+21>timeout: the monitored command dumped core

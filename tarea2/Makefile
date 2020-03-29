@@ -108,7 +108,7 @@ $(TESTDIR)/%.sal:$(TESTDIR)/%.in
 
 
 
-# Test general. Las dependencias son los .diff.
+#Test general. Las dependencias son los .diff.
 # Con `find` se encuentran los .diff de tamaño > 0 que están en el directorio
 # $(TESTDIR) y lo asigna a $(LST_ERR).
 # Si el tamaño de $(LST_ERR) no es cero imprime los casos con error.
