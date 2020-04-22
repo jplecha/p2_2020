@@ -1,3 +1,4 @@
+//52139037
 #include "../include/cadena.h"
 #include "../include/info.h"
 #include "../include/utils.h"
@@ -256,7 +257,18 @@ bool precedeEnCadena(TLocalizador loc1, TLocalizador loc2, TCadena cad){
   
   return res;
 }
-
+//revisar
+/*
+  Se inserta en 'cad' la 'TCadena' 'sgm' inmediatamente después de 'loc',
+  manteniendo los elementos originales y el orden relativo entre ellos.
+  Devuelve 'cad'.
+  No se debe obtener memoria (los nodos de 'sgm' pasan a ser parte de 'cad').
+  Se libera la memoria asignada al resto de las estructuras de 'sgm'.
+  El valor de 'sgm' queda indeterminado.
+  Si esVaciaCadena(cad) 'loc' es ignorado y el segmento queda insertado.
+  Precondición: esVaciaCadena(cad) o localizadorEnCadena(loc, cad).
+  El tiempo de ejecución en el peor caso es O(1).
+ */
 TCadena insertarSegmentoDespues(TCadena sgm, TLocalizador loc, TCadena cad){
 	if(esVaciaCadena(cad)){
 		cad->inicio=sgm->inicio;

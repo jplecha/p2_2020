@@ -1,8 +1,9 @@
+//52139037
 #include "../include/cadena.h"
 #include "../include/info.h"
 #include "../include/utils.h"
 #include "../include/usoTads.h"
-
+#include <stdio.h>
 /*
   Devuelve 'true' si y solo si en 'cad' hay un elemento cuyo campo natural es
   'elem'.
@@ -64,7 +65,36 @@ bool estaOrdenadaPorNaturales(TCadena cad){
 	Falta implementar
 */
 bool hayNatsRepetidos(TCadena cad){
-	return true;
+	bool encontrado=false;
+	if (longitud(cad)>1){
+		TLocalizador loc1=inicioCadena(cad);
+		TCadena cad2=crearCadena();
+		TLocalizador loc2;
+		nat n;
+		insertarAlFinal(copiaInfo(infoCadena(loc1,cad)),cad2);
+		loc1=siguiente(loc1,cad);
+		
+	while(esLocalizador(loc1) && !encontrado){
+			n=natInfo(infoCadena(loc1,cad));
+			loc2=inicioCadena(cad2);
+			while(esLocalizador(loc2) && !encontrado){
+				if(n==natInfo(infoCadena(loc2,cad2))){
+					encontrado=true;
+				}else{
+					if(esFinalCadena(loc2,cad2)){
+						insertarAlFinal(copiaInfo(infoCadena(loc1,cad)),cad2);
+						loc2=NULL;
+					}else{
+					loc2=siguiente(loc2,cad2);
+					}
+				}
+			}
+			loc1=siguiente(loc1,cad);
+	}
+	liberarCadena(cad2);
+	loc2=loc1=NULL;
+	}
+	return encontrado;
 }
 
 /*
@@ -76,9 +106,10 @@ bool hayNatsRepetidos(TCadena cad){
 */
 bool sonIgualesCadena(TCadena c1, TCadena c2){
 	TLocalizador loc1=inicioCadena(c1), loc2=inicioCadena(c2);
-	bool res;
+	bool res=true;
+	TInfo info1,info2;
 	while(esLocalizador(loc1) && esLocalizador(loc2) && res){
-		TInfo info1=infoCadena(loc1,c1), info2=infoCadena(loc2,c2);
+		info1=infoCadena(loc1,c1), info2=infoCadena(loc2,c2);
 		if((natInfo(info1)==natInfo(info2)) && (realInfo(info1)==realInfo(info2))){
 			loc1=siguiente(loc1,c1);
 			loc2=siguiente(loc2,c2);
@@ -86,21 +117,20 @@ bool sonIgualesCadena(TCadena c1, TCadena c2){
 			res=false;
 		}
 	}
-	return res;
+	return res && !esLocalizador(loc1) && !esLocalizador(loc2);
 }
 /*
   Devuelve el resultado de concatenar 'c2' después de 'c1'.
   La 'TCadena' resultado no comparte memoria ni con 'c1' ni con 'c2'.
   El tiempo de ejecución en el peor caso es O(n1 + n2), siendo 'n1' u 'n2' la
   cantidad de elementos de 'c1' y 'c2' respectivamente.
+	revisar
 */
 TCadena concatenar(TCadena c1, TCadena c2){
-	TCadena priCad, segCad;
+	TCadena priCad;
 	if(!esVaciaCadena(c1) && !esVaciaCadena(c2)){
 		priCad=copiarSegmento(inicioCadena(c1),finalCadena(c1),c1);
-		segCad=copiarSegmento(inicioCadena(c2),finalCadena(c2),c2);
-		insertarSegmentoDespues(segCad,finalCadena(priCad),priCad);
-		liberarCadena(segCad);
+		insertarSegmentoDespues(copiarSegmento(inicioCadena(c2),finalCadena(c2),c2),finalCadena(priCad),priCad);
 	}else if(esVaciaCadena(c2)){
 		priCad=copiarSegmento(inicioCadena(c1),finalCadena(c1),c1);
 	}else if(esVaciaCadena(c1)){
@@ -126,7 +156,7 @@ TCadena ordenar(TCadena cad){
 	TLocalizador inicioCad = inicioCadena(cad);
 	while(esLocalizador(inicioCad)){
 		TLocalizador aux=inicioCad;
-		while(esLocalizador(anterior(aux,cad)) && realInfo(infoCadena(aux,cad))<realInfo(infoCadena(anterior(aux,cad),cad))){
+		while(esLocalizador(anterior(aux,cad)) && natInfo(infoCadena(aux,cad))<natInfo(infoCadena(anterior(aux,cad),cad))){
 			intercambiar(aux,anterior(aux,cad),cad);
 			aux=anterior(aux,cad);
 		}
@@ -170,5 +200,66 @@ TCadena cambiarTodos(nat original, nat nuevo, TCadena cad){
   Falta implementar
 */
 TCadena subCadena(nat menor, nat mayor, TCadena cad){
-	return cad;
+	TCadena res=crearCadena();
+	TLocalizador loc=inicioCadena(cad);
+	if(longitud(cad)==1) {
+		insertarAlFinal(copiaInfo(infoCadena(loc,cad)),res);
+	}else{
+		
+	while(esLocalizador(loc) && natInfo(infoCadena(loc,cad))<=mayor){
+		if(natInfo(infoCadena(loc,cad))>=menor){
+			insertarAlFinal(copiaInfo(infoCadena(loc,cad)),res);
+		}
+		loc=siguiente(loc,cad);
+	}
+	}
+	return res;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
