@@ -1,3 +1,5 @@
+//52139037
+
 #include "../include/iterador.h"
 #include "../include/utils.h"
 
@@ -23,12 +25,6 @@ TIterador crearIterador(){
 }
 
 
-/*
-  Agrega 'elem' al final de 'iter' si y solo si nunca se reinicio.
-  Devuelve 'iter'.
-  La posición actual sigue indefinida.
-  El tiempo de ejecución en el peor caso es O(1).
- */
 TIterador agregarAIterador(nat elem, TIterador iter){
 if(!iter->bloqueado){
 	PNodoIt nodoNuevo=new nodoIt;
@@ -45,13 +41,6 @@ if(!iter->bloqueado){
 return iter;
 }
 
-/*
-  Mueve la posición actual de 'iter' al primero si y solo si 'iter' tiene
-  elementos.
-  Devuelve 'iter'.
-  No se podrán agregar más elementos (aunque no hubiera ninguno).
-  El tiempo de ejecución en el peor caso es O(1).
- */
 TIterador reiniciarIterador(TIterador iter){
 
 	if(iter->fin!=NULL){
@@ -61,13 +50,7 @@ TIterador reiniciarIterador(TIterador iter){
 	return iter;
 }
 
-/*
-  Avanza la posición actual de 'iter' hacia el siguiente si y solo si'
-  estaDefinidaActual(iter).
-  Devuelve 'iter'.
-  Si ! haySiguienteEnIter(iter) la posición actual queda indefinida.
-  El tiempo de ejecución en el peor caso es O(1).
- */
+
 TIterador avanzarIterador(TIterador iter){
 
 if(estaDefinidaActual(iter)){
@@ -77,34 +60,15 @@ if(estaDefinidaActual(iter)){
 return iter;
 }
 
-/*
-  Devuelve el elemento de la posición actual de 'iter'.
-  Precondición: estaDefinidaActual(iter).
-  El tiempo de ejecución en el peor caso es O(1).
- */
+
 nat actualEnIterador(TIterador iter){
 	return iter->actual->elem;
 }
 
-
-
-
-
-
-/*
-  Devuelve 'true' si y solo si la posición actual de 'iter' está definida.
-  El tiempo de ejecución en el peor caso es O(1).
- */
 bool estaDefinidaActual(TIterador iter){
 	return (iter->actual != NULL);
 }
 
-
-/*
-  Libera la memoria asignada a 'iter'.
-  El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad
-  de elementos de 'iter'.
- */
 void liberarIterador(TIterador iter){
 	iter->actual=iter->inicio;
 	while(iter->actual!=NULL){

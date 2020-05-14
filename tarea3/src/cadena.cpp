@@ -66,11 +66,6 @@ TLocalizador finalCadena(TCadena cad){
   return res;
 }
 
-/*
-  Devuelve el elemento de 'cad' al que se accede con 'loc'.
-  Precondición: localizadorEnCadena(loc, cad).
-  El tiempo de ejecución en el peor caso es O(1).
-*/
 TInfo infoCadena(TLocalizador loc, TCadena cad){
 	return loc->dato;
 }
@@ -107,11 +102,6 @@ bool localizadorEnCadena(TLocalizador loc, TCadena cad){
   return esLocalizador(cursor);
 }
 
-/*
-  Devuelve 'true' si y solo si con 'loc' se accede al último elemento de 'cad'.
-  Si esVaciaCadena (cad) devuelve 'false'.
-  El tiempo de ejecución en el peor caso es O(1).
-*/
 bool esFinalCadena(TLocalizador loc, TCadena cad){
 	bool res;
 	if(esVaciaCadena(cad)){
@@ -122,11 +112,7 @@ bool esFinalCadena(TLocalizador loc, TCadena cad){
 	return res;
 }
 
-/*
-  Devuelve 'true' si y solo si con 'loc' se accede al primer elemento de 'cad'.
-  Si esVaciaCadena (cad) devuelve 'false'.
-  El tiempo de ejecución en el peor caso es O(1).
-*/
+
 bool esInicioCadena(TLocalizador loc, TCadena cad){
 	bool res;
 	if(esVaciaCadena(cad)){
@@ -136,12 +122,7 @@ bool esInicioCadena(TLocalizador loc, TCadena cad){
 	}
 	return res;
 }
-/*
-  Se inserta 'i' como último elemento de 'cad'.
-  Devuelve 'cad'.
-  Si esVaciaVadena (cad) 'i' se inserta como único elemento de 'cad'.
-  El tiempo de ejecución en el peor caso es O(1).
-*/
+
 TCadena insertarAlFinal(TInfo i, TCadena cad){
 	nodo *aIns=new nodo;
 	aIns->dato=i;
@@ -156,12 +137,6 @@ TCadena insertarAlFinal(TInfo i, TCadena cad){
 	return cad;
 }
 
-/*
-  Se inserta 'i' como un nuevo elemento inmediatamente antes de 'loc'.
-  Devuelve 'cad'.
-  Precondición: localizadorEnCadena(loc, cad).
-  El tiempo de ejecución en el peor caso es O(1).
-*/
 TCadena insertarAntes(TInfo i, TLocalizador loc, TCadena cad){
 	nodo *nuevo=new nodo;
 	nuevo->dato=i;
@@ -176,14 +151,6 @@ TCadena insertarAntes(TInfo i, TLocalizador loc, TCadena cad){
 	return cad;
 }
 
-/*
-  Se remueve el elemento al que se accede desde 'loc' y se libera la memoria
-  asignada al mismo y al nodo apuntado por el localizador.
-  Devuelve 'cad'.
-  El valor de 'loc' queda indeterminado.
-  Precondición: localizadorEnCadena(loc, cad).
-  El tiempo de ejecución en el peor caso es O(1).
-*/
 TCadena removerDeCadena(TLocalizador loc, TCadena cad){
 	if(loc->anterior!=NULL){
 		loc->anterior->siguiente=loc->siguiente;
@@ -199,17 +166,7 @@ TCadena removerDeCadena(TLocalizador loc, TCadena cad){
 	delete loc;
 	return cad;
 }
-/*
-  Imprime los elementos de 'cad' de la siguiente forma:
-  (n de pos1,r de pos1)(n de pos2,r de pos2) ...
-  donce 'n` es el componente natural y 'r' es el componente real.
-  Antes de terminar, se debe imprimir un fin de linea.
-  Si esVaciaCadena(cad) sólo se imprime el fin de línea.
-  El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
-  elementos en 'cad'.
-  
-  Falta implementar
-*/
+
 void imprimirCadena(TCadena cad){
 	if(!esVaciaCadena(cad)){
 		TLocalizador aux=cad->inicio;
@@ -221,13 +178,7 @@ void imprimirCadena(TCadena cad){
 	printf("\n");
 	
 }
-/*
-  Devuelve el 'TLocalizador' con el que se accede al k-esimo elemento de 'cad'.
-  Si 'k' es 0 o mayor a la cantidad de elementos de 'cad' devuelve un
-  localizdor  no válido.
-  El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
-  elementos en 'cad'.
-*/
+
 TLocalizador kesimo(nat k, TCadena cad){
 	TLocalizador res=inicioCadena(cad);
 	if(k!=0){
@@ -257,18 +208,7 @@ bool precedeEnCadena(TLocalizador loc1, TLocalizador loc2, TCadena cad){
   
   return res;
 }
-//revisar
-/*
-  Se inserta en 'cad' la 'TCadena' 'sgm' inmediatamente después de 'loc',
-  manteniendo los elementos originales y el orden relativo entre ellos.
-  Devuelve 'cad'.
-  No se debe obtener memoria (los nodos de 'sgm' pasan a ser parte de 'cad').
-  Se libera la memoria asignada al resto de las estructuras de 'sgm'.
-  El valor de 'sgm' queda indeterminado.
-  Si esVaciaCadena(cad) 'loc' es ignorado y el segmento queda insertado.
-  Precondición: esVaciaCadena(cad) o localizadorEnCadena(loc, cad).
-  El tiempo de ejecución en el peor caso es O(1).
- */
+
 TCadena insertarSegmentoDespues(TCadena sgm, TLocalizador loc, TCadena cad){
 	if(esVaciaCadena(cad)){
 		cad->inicio=sgm->inicio;
@@ -290,15 +230,6 @@ TCadena insertarSegmentoDespues(TCadena sgm, TLocalizador loc, TCadena cad){
 	return cad;
 }
 
-/*
-  Devuelve una 'TCadena' con los elementos de 'cad' que se encuentran entre
-  'desde' y 'hasta', incluidos.
-  La 'TCadena' resultado no comparte memoria con 'cad'.
-  Si esVaciaCadena(cad) devuelve la 'TCadena' vacia.
-  Precondición: esVaciaCadena(cad) o precedeEnCadena(desde, hasta, cad).
-  El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
-  elementos en la cadena resultado.
-*/
 TCadena copiarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad){
 	TCadena res=crearCadena();
 	if(!esVaciaCadena(cad)){
@@ -311,15 +242,7 @@ TCadena copiarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad){
 	}
 	return res;
 }
-/*
-  Remueve de 'cad' los elementos que se encuentran  entre 'desde' y 'hasta',
-  incluidos y libera la memoria que tenían asignada y la de sus nodos.
-  Devuelve 'cad'.
-  Si esVaciaCadena(cad) devuelve la 'TCadena' vacía.
-  Precondición: esVaciaCadena(cad) o precedeEnCadena(desde, hasta, cad).
-  El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
-  elementos en la cadena resultado.
-*/
+
 TCadena borrarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad){
 	if(!esVaciaCadena(cad)){
 		if(desde==hasta){
@@ -349,27 +272,11 @@ TCadena borrarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad){
 	return cad;
 }
 
-/*
-  Sustituye con 'i' el elemento de 'cad' al que se accede con 'loc'.
-  Devuelve 'cad'.
-  No destruye el elemento al que antes se accedía con 'loc'.
-  Precondición: localizadorEnCadena(loc, cad).
-  El tiempo de ejecución en el peor caso es O(1).
- 
-*/
 TCadena cambiarEnCadena(TInfo i, TLocalizador loc, TCadena cad){
 	loc->dato=i;
 	return cad;
 }
-/*
-  Intercambia los elementos a los que se accede con 'loc1' y 'loc2'.
-  'loc1' y 'loc2' mantienen su relación de precedencia.
-  Devuelve 'cad'.
-  Precondición:
-  localizadorEnCadena (loc1, cad)
-  y localizadorEnCadena (loc2, cad).
-  El tiempo de ejecución en el peor caso es O(1).
-*/
+
 TCadena intercambiar(TLocalizador loc1, TLocalizador loc2, TCadena cad){
 	TInfo aux= copiaInfo(loc1->dato);
 	liberarInfo(loc1->dato);
@@ -377,16 +284,7 @@ TCadena intercambiar(TLocalizador loc1, TLocalizador loc2, TCadena cad){
 	loc2->dato=aux;
 	return cad;
 }
-/*
-  Devuelve el primer 'TLocalizador' con el que se accede a un elemento cuyo
-  componente natural es igual a 'clave', buscando desde 'loc' (inclusive) hacia
-  el final de 'cad'. Si no se encuentra o 'cad' es vacía devuelve un
-  'TLocalizador' no válido.
-  Precondición: esVaciaCadena(cad) o localizadorEnCadena(loc, cad).
-  El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
-  elementos en 'cad'.
- 
-*/
+
 TLocalizador siguienteClave(nat clave, TLocalizador loc, TCadena cad){
 	TLocalizador aux=loc;
 	if(esVaciaCadena(cad)){
@@ -398,16 +296,7 @@ TLocalizador siguienteClave(nat clave, TLocalizador loc, TCadena cad){
 	}
 	return aux;
 }
-/*
-  Devuelve el primer 'TLocalizador' con el que se accede a un elemento cuyo
-  componente natural es igual a 'clave', buscando desde 'loc' (inclusive) hacia
-  el inicio de 'cad'. Si no se encuentra o 'cad' es vacía devuelve un
-  'TLocalizador' no válido.
-  Precondición: esVaciaCadena(cad) o localizadorEnCadena(loc, cad).
-  El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
-  elementos en 'cad'.
-  
-*/
+
 TLocalizador anteriorClave(nat clave, TLocalizador loc, TCadena cad){
 	TLocalizador aux=loc;
 	if(esVaciaCadena(cad)){
@@ -420,15 +309,7 @@ TLocalizador anteriorClave(nat clave, TLocalizador loc, TCadena cad){
 	return aux;
 }
 
-/*
-  Devuelve el 'TLocalizador' con el que se accede al elemento cuyo componente
-  natural es el menor en el segmento que va desde 'loc' hasta finalCadena(cad).
-  Si hay más de un elemento cuyo valor es el menor el resultado accede al que
-  precede a los otros.
-  Precondición: localizadorEnCadena(loc, cad).
-  El tiempo de ejecución en el peor caso es O(n), siendo 'n' la cantidad de
-  elementos en 'cad'.
-*/
+
 TLocalizador menorEnCadena(TLocalizador loc, TCadena cad){
 	TLocalizador res=loc;
 	while(esLocalizador(siguiente(loc,cad))){

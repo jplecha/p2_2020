@@ -1,9 +1,4 @@
-/*
-  Módulo de implementación de 'utils'.
-
-  Laboratorio de Programación 2.
-  InCo-FIng-UDELAR
- */
+//52139037
 
 #include "../include/utils.h"
 

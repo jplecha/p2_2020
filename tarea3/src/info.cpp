@@ -1,12 +1,4 @@
-/*
-  Módulo de implementación de `TInfo'.
-
-  Se implementa struct rep_info como un registro con dos campos, uno natural y
-  otro double.
-
-  Laboratorio de Programación 2.
-  InCo-FIng-UDELAR
- */
+//52139037
 
 #include "../include/info.h"
 #include "../include/utils.h"
