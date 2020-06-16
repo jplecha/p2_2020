@@ -70,9 +70,20 @@ bool esCamino(TCadena c, TBinario b){
   siendo 'n1' y 'n2' la cantidad de elementos de 'c1' y 'c2' respectivamente y
   'n' la del 'TConjunto' resultado.
  */
+ //modificar
 TConjunto interseccionDeConjuntos(TConjunto c1, TConjunto c2){
-	TConjunto res=diferenciaDeConjuntos(c1, diferenciaDeConjuntos(c1,c2));
-	return res;
+  if(!estaVacioConjunto(c1) && !estaVacioConjunto(c2)){   
+    TConjunto aunb = unionDeConjuntos(c1,c2);
+    TConjunto ab = diferenciaDeConjuntos(c1,c2);
+    TConjunto ba = diferenciaDeConjuntos(c2,c1);
+    TConjunto abunba = unionDeConjuntos(ab,ba);
+    TConjunto resu = diferenciaDeConjuntos(aunb,abunba);
+    liberarConjunto(abunba);
+    liberarConjunto(aunb);
+    liberarConjunto(ba);
+    liberarConjunto(ab);
+    return resu;
+  }else return crearConjunto();
 }
 
 bool esCamino(TCadena c, TBinario b){

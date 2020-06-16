@@ -7,6 +7,7 @@
 #include <stddef.h>
 struct repConjunto {
 	TAvl arbol;
+	
 };
 
 typedef struct repConjunto *TConjunto;
@@ -28,7 +29,8 @@ TConjunto crearConjunto(){
 TConjunto singleton(nat elem){
 	TConjunto larespu = crearConjunto();
 	larespu->arbol = crearAvl();
-	insertarEnAvl(elem, larespu->arbol);
+	larespu->arbol=insertarEnAvl(elem, larespu->arbol);
+	
 	return larespu;
 }
 
@@ -47,13 +49,13 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
 	reiniciarIterador(iterac2);	
 	if (estaVacioConjunto(c1)){
 		while (estaDefinidaActual(iterac2)){	
-		insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
+		solucion->arbol=insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
 		avanzarIterador(iterac2);
 		}	
 	}
 	else if (estaVacioConjunto(c2)){
 		while (estaDefinidaActual(iterac1)){	
-		insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
+		solucion->arbol=insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
 		avanzarIterador(iterac1);
 		}	
 	}
@@ -61,17 +63,17 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
 		
 	while ((estaDefinidaActual(iterac1)) && (estaDefinidaActual(iterac2))){
 			if (actualEnIterador(iterac1)<actualEnIterador(iterac2)){
-				insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);	
+				solucion->arbol=insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);	
 				avanzarIterador(iterac1);
 			}
 			else {
 				if (actualEnIterador(iterac1)>actualEnIterador(iterac2)){
 	
-				insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
+				solucion->arbol=insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
 				avanzarIterador(iterac2);
 			     } else	if (actualEnIterador(iterac1)==actualEnIterador(iterac2)){
 				
-				insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
+				solucion->arbol=insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
 				avanzarIterador(iterac2);
 				avanzarIterador(iterac1);
 				}
@@ -79,13 +81,13 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
 		}
 	while (estaDefinidaActual(iterac1)){
 			
-		insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
+		solucion->arbol=insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
 		avanzarIterador(iterac1);
 	}	
 	
 	while (estaDefinidaActual(iterac2)){
 			
-		insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
+		solucion->arbol=insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
 		avanzarIterador(iterac2);
 	}	
 }
@@ -114,7 +116,7 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
 	else if (estaVacioConjunto(c2)){
 		while (estaDefinidaActual(iterac1)){	
 		agregar = actualEnIterador(iterac1);
-		insertarEnAvl(agregar, solucion->arbol);
+		solucion->arbol=insertarEnAvl(agregar, solucion->arbol);
 		avanzarIterador(iterac1);
 		}	
 	}
@@ -123,7 +125,7 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
 	while ((estaDefinidaActual(iterac1)) && (estaDefinidaActual(iterac2))){
 			if (actualEnIterador(iterac1)<actualEnIterador(iterac2)){
 				agregar = actualEnIterador(iterac1);
-				insertarEnAvl(agregar, solucion->arbol);	
+				solucion->arbol=insertarEnAvl(agregar, solucion->arbol);	
 				avanzarIterador(iterac1);
 			}
 			else {
@@ -137,7 +139,7 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
 		}
 	while (estaDefinidaActual(iterac1)){	
 		agregar =actualEnIterador(iterac1);
-		insertarEnAvl(agregar, solucion->arbol);
+		solucion->arbol=insertarEnAvl(agregar, solucion->arbol);
 		avanzarIterador(iterac1);
 	}	
 	
@@ -177,7 +179,7 @@ bool estaVacioConjunto(TConjunto c){
  */
 nat cardinalidad(TConjunto c){
  //Implementar
- return 1;
+ return cantidadEnAvl(c->arbol);
 }
 
 /*

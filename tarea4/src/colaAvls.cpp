@@ -33,6 +33,7 @@ TColaAvls crearColaAvls(){
  */
 TColaAvls encolar(TAvl avl, TColaAvls c){
 	if (!estaVacioAvl(avl)) {
+		
 		Nodo *agregar = new Nodo;
 		agregar->arbol = avl;
 		agregar->ant = NULL;

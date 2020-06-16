@@ -20,11 +20,17 @@ struct repMap{
   El tiempo de ejecución en el peor caso es O(M).
  */
 TMapping crearMap(nat M){
-	TMapping map=new repMap;
-	map->cadena=NULL;
-	map->M=M;
-	map->cant=0;
-	return map;
+	nat iterador;
+    if (M < 1)
+        return NULL;
+    TMapping map = new repMap;
+    map->cadena = new TCadena[M];
+    for (iterador = 0; iterador < M; iterador++) {
+        map->cadena[iterador]= crearCadena();
+    }
+    map->cant = 0;
+    map->M = M;
+    return map;
 }
 
 /*
@@ -37,11 +43,7 @@ TMapping asociarEnMap(nat clave, double valor, TMapping map){
 	
 	TInfo nuevo=crearInfo(clave,valor);
 	nat pos= clave % map->M;
-	if(map->cadena[pos]==NULL){
-	    map->cadena[pos]=insertarAlFinal(nuevo,crearCadena());
-	}else{
-		map->cadena[pos]=insertarAlFinal(nuevo, map->cadena[pos]);
-	}
+	map->cadena[pos]=insertarAlFinal(nuevo, map->cadena[pos]);
     map->cant++;
     return map;
 }
@@ -110,9 +112,9 @@ bool estaLlenoMap(TMapping map){
   pasado en crearMap.
  */
 void liberarMap(TMapping map){
-	for (nat i=0; i<map->M;i++){
-		liberarCadena(map->cadena[i]);
-	}
-	delete[] map->cadena;
-	delete map;
+	for (nat i= 0; i < (map->M); i++) {
+            liberarCadena(map->cadena[i]);
+    }
+    delete[] map->cadena;
+    delete map;
 }

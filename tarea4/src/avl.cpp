@@ -36,71 +36,75 @@ nat raizAvl(TAvl avl) {
 	return avl->dato;
 }
 
-static int max(int a, int b){
+static int maximo(int a, int b){
 	return (a>b)? a: b;
 }
-static void rotarDer(TAvl &avl){
-	TAvl unaesquina = avl->izq;
-	TAvl zanahoria = unaesquina->der;
-	unaesquina->der = avl;
-	avl->izq = zanahoria;
-	avl->altura = max(alturaDeAvl(avl->izq), alturaDeAvl(avl->der)) + 1;
-	avl->cantidad = cantidadEnAvl(avl->izq) + cantidadEnAvl(avl->der) + 1;
-	unaesquina->altura = max(alturaDeAvl(unaesquina->izq), alturaDeAvl(unaesquina->der)) + 1;
-	unaesquina->cantidad = cantidadEnAvl(unaesquina->izq) + cantidadEnAvl(unaesquina->der) + 1;	
-	avl = unaesquina;	
-}
-static void rotarIzq(TAvl &avl){
-	TAvl unaesquina = avl->der;
-	TAvl zanahoria = unaesquina->izq;
-	unaesquina->izq = avl;
-	avl->der = zanahoria;
-	avl->altura = max(alturaDeAvl(avl->izq), alturaDeAvl(avl->der)) + 1;
-	avl->cantidad = cantidadEnAvl(avl->izq) + cantidadEnAvl(avl->der) + 1;	
-	unaesquina->altura = max(alturaDeAvl(unaesquina->izq), alturaDeAvl(unaesquina->der)) + 1;
-	unaesquina->cantidad = cantidadEnAvl(unaesquina->izq) + cantidadEnAvl(unaesquina->der) + 1;	
-	avl = unaesquina;
+static void rotacionD(TAvl &avl){
+    TAvl I = avl->izq;
+    TAvl D = I->der;
+    I->der = avl;
+    avl->izq = D;
+    
+    avl->cantidad =(cantidadEnAvl(avl->izq) + cantidadEnAvl(avl->der))+1;
+    I->cantidad = (cantidadEnAvl(I->izq) + cantidadEnAvl(I->der))+1;
+    avl->altura = maximo(alturaDeAvl(avl->izq),alturaDeAvl(avl->der))+1;
+    I->altura = maximo(alturaDeAvl(I->izq),alturaDeAvl(I->der))+1;
+    avl = I;
 }
 
+static void rotacionI(TAvl &avl){
+    TAvl I =avl->der;
+    TAvl D = I->izq;
+    I->izq = avl;
+    avl->der = D;
+    
+    avl->cantidad =(cantidadEnAvl(avl->izq) + cantidadEnAvl(avl->der))+1;
+    I->cantidad = (cantidadEnAvl(I->izq) + cantidadEnAvl(I->der))+1;
+    avl->altura = maximo(alturaDeAvl(avl->izq),alturaDeAvl(avl->der))+1;
+    I->altura = maximo(alturaDeAvl(I->izq),alturaDeAvl(I->der))+1;
+    avl = I;
+    }
+
 TAvl insertarEnAvl(nat elem, TAvl avl){
-	TAvl res;
-	if(avl==NULL){
-		res=new repAvl;
-		res->dato=elem;
-		res->izq=avl->der=NULL;
-		res->altura=1;
-		res->cantidad=1;
-	}else if(elem<raizAvl(avl)){
-			res=insertarEnAvl(elem, avl->izq);
-			avl->altura = max(alturaDeAvl(avl->izq), alturaDeAvl(avl->der)) + 1;
-			avl->cantidad = cantidadEnAvl(avl->izq) + cantidadEnAvl(avl->der) + 1;
-			int num = alturaDeAvl(avl->izq) - alturaDeAvl(avl->der);
-			if (num>1){
-				if(alturaDeAvl(avl->izq->der)> alturaDeAvl(avl->izq->izq)){
-					rotarIzq(avl->izq);
-					rotarDer(avl); 
-				}
-				else {
-					rotarDer(avl);		
-				}		
-			}	
+	if (avl == NULL){
+        avl = new repAvl;
+        avl->dato = elem ;
+        avl->izq = avl->der = NULL;
+        avl->altura = 1;
+        avl->cantidad = 1;
+    }else{
+        if (elem < avl->dato){
+            avl->izq = insertarEnAvl(elem ,avl->izq);
+            avl->altura = maximo(alturaDeAvl(izqAvl(avl)),alturaDeAvl(derAvl(avl)))+1;
+            avl->cantidad = avl->cantidad +1;
+            int aux =(alturaDeAvl(izqAvl(avl)) - alturaDeAvl(derAvl(avl)));
+            if (aux > 1){
+                if (alturaDeAvl(avl->izq->izq) > alturaDeAvl(avl->izq->der)){
+                    rotacionD(avl);
+                }else{
+                    rotacionI(avl->izq);
+                    rotacionD(avl);
+                    }
+                }
+        }else{
+            avl->der = insertarEnAvl(elem ,avl->der);
+            avl->altura = maximo(alturaDeAvl(izqAvl(avl)),alturaDeAvl(derAvl(avl)))+1;
+            avl->cantidad = avl->cantidad +1;
+
+            int aux = (alturaDeAvl(izqAvl(avl)) - alturaDeAvl(derAvl(avl)));
+            if (aux<-1){
+                if (alturaDeAvl(avl->der->der) > alturaDeAvl(avl->der->izq)){
+                    rotacionI(avl);
+                }else{
+                    rotacionD(avl->der);
+                    rotacionI(avl);
+
+                    }
+            }
+        }
     }
-    else{
-		res=insertarEnAvl(elem, avl->der);
-		avl->altura = max(alturaDeAvl(avl->izq), alturaDeAvl(avl->der)) + 1;
-		avl->cantidad = cantidadEnAvl(avl->izq) + cantidadEnAvl(avl->der) + 1;
-		int num = alturaDeAvl(avl->der) - alturaDeAvl(avl->izq);
-		if (num>1){
-			if(alturaDeAvl(avl->der->izq)> alturaDeAvl(avl->der->der)){
-				rotarDer(avl->der);
-				rotarIzq(avl);		
-			}
-			else {
-				rotarIzq(avl);
-			}
-		}		
-    }
-	return res;
+    return avl ;
+    //modificar
 }
 
 /*
@@ -174,24 +178,20 @@ nat alturaDeAvl(TAvl avl){
   El tiempo de ejecución en el peor caso es O(n) siendo 'n' la cantidad de
   elementos de 'avl'.
  */
+static void enOrdenAvlAux(TIterador res, TAvl &avl){
+  if(avl!= NULL){
+    enOrdenAvlAux(res,avl->izq);
+    res = agregarAIterador(avl->dato,res);
+    enOrdenAvlAux(res, avl->der);
+  }
  
- static TIterador en_orden_rec(TIterador res, TAvl avl){
-	if (!estaVacioAvl(avl)){
-		res = en_orden_rec(res, izqAvl(avl));
-		res = agregarAIterador(raizAvl(avl),res);
-		res = en_orden_rec(res, derAvl(avl));
-	}
-	return res;
 }
 
 TIterador enOrdenAvl(TAvl avl){
-	TIterador larespu=crearIterador();
-	if (estaVacioAvl(avl))
-		larespu = NULL;
-	else{
-		larespu = en_orden_rec(larespu, avl);
-	}
-	return larespu;
+    TIterador res;
+    res= crearIterador();
+    enOrdenAvlAux(res,avl);
+  return res;
 }
 
 /*
@@ -217,7 +217,7 @@ TIterador enOrdenAvl(TAvl avl){
 		larespu->izq = a2avl_rec(infos, inf, medio - 1);
 		larespu->der = a2avl_rec(infos, medio + 1, sup);
 		larespu->cantidad = cantidadEnAvl(izqAvl(larespu)) + cantidadEnAvl(derAvl(larespu)) + 1;
-		larespu->altura = 1 + max(alturaDeAvl(izqAvl(larespu)), alturaDeAvl(derAvl(larespu)) );
+		larespu->altura = 1 + maximo(alturaDeAvl(izqAvl(larespu)), alturaDeAvl(derAvl(larespu)) );
 	}
 	return larespu;
 }
@@ -236,46 +236,44 @@ TAvl arregloAAvl(nat *elems, nat n){
   El tiempo de ejecución en el peor caso es O(n).
   Ver ejemplos en la letra.
  */
- static avlUltimo avl_min_rec(nat h, nat primero){
-        avlUltimo larespu;
-        if (h == 0){
-                larespu.avl = NULL;
-                larespu.ultimo = primero - 1;
-        }
-        else if (h == 1){
-                larespu.ultimo = primero;
-                
-                larespu.avl = new repAvl;
-                larespu.avl->dato = primero;
-                larespu.avl->altura = 1;
-                larespu.avl->cantidad = 1;
-                larespu.avl->izq = larespu.avl->der = NULL;
-        }
-        else{
-               
-                avlUltimo avlpri=avl_min_rec(h-1,primero);
-                avlUltimo avlseg=avl_min_rec(h-2,1);
-                larespu.ultimo = cantidadEnAvl(avlpri.avl) + cantidadEnAvl(avlseg.avl) + primero;
-				liberarAvl(avlseg.avl);
-				
-				
-                larespu.avl = new repAvl;
-                larespu.avl->dato = primero;
-                larespu.avl->izq = avlpri.avl;
-                larespu.avl->der = avl_min_rec(h-2,raizAvl(larespu.avl)+1).avl;
-                larespu.avl->altura = max(alturaDeAvl(larespu.avl->izq), alturaDeAvl(larespu.avl->der)) + 1;
-                larespu.avl->cantidad = cantidadEnAvl(larespu.avl->izq) + cantidadEnAvl(larespu.avl->der) + 1;
-        }
+struct ultimoAvl{
+	TAvl avl;
+	int ultimo;
+};
 
-
-        return larespu;
+//modificar
+static ultimoAvl avlMinAux(nat h, nat primero){
+  ultimoAvl res;
+  if (h ==1){
+    res.avl = new repAvl;
+    res.avl -> dato = primero;
+    res.avl->cantidad = 1;
+    res.avl->altura = 1;
+    res.avl->der = NULL;
+    res.avl->izq = NULL;
+    res.ultimo = primero;
+  }else  if (h== 0){
+    res.avl = NULL;
+    res.ultimo = primero - 1;
+  }else{
+    res.avl = new repAvl;
+    ultimoAvl izq = avlMinAux(h-1,primero);
+    res.avl->dato =izq.ultimo +1;
+    res.avl->izq = izq.avl;
+    ultimoAvl der = avlMinAux(h-2,izq.ultimo+2);
+    res.avl->der= der.avl;
+    res.ultimo = der.ultimo;
+    res.avl->altura = maximo(alturaDeAvl(res.avl->izq), alturaDeAvl(res.avl->der)) + 1;
+    res.avl->cantidad = cantidadEnAvl(izqAvl(res.avl)) + cantidadEnAvl(derAvl(res.avl)) + 1;
+  }
+  return res;
 }
 
+//modificar
 TAvl avlMin(nat h){
-	avlUltimo larespu = avl_min_rec(h, 1);
-	return larespu.avl;
+  ultimoAvl  res = avlMinAux(h,1);
+  return res.avl;
 }
-
 /*
   Imprime los elementos de cada nivel de 'avl'.
   Imprime una línea por nivel, primero el más profundo y al final el que

@@ -43,11 +43,12 @@ return iter;
 
 TIterador reiniciarIterador(TIterador iter){
 
-	if(iter->fin!=NULL){
-		iter->actual=iter->inicio;
-		iter->bloqueado=true;
-	}
-	return iter;
+	if (iter->inicio != NULL){
+		iter->actual = iter->inicio;
+    }
+    iter->bloqueado = false;
+    
+  return iter;  
 }
 
 

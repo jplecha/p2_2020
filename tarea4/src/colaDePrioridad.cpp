@@ -8,131 +8,155 @@
 #include "../include/colaDePrioridad.h"
 
 struct repCP {
-    nat cant;
-    nat N;
-    TCadena *colaPrioridad;
+    TInfo *array;
+	nat tope;
+	nat N;
+	nat *posiciones;
 };
 
-/*
-  Devuelve una 'TColaDePrioridad' vacía (sin elementos). Podrá contener
-  elementos entre 1 y N.
-  El tiempo de ejecución en el peor caso es O(N).
- */
+
 TColaDePrioridad crearCP(nat N){
-	nat iterador;
-    if (N < 1)
-        return NULL;
-    TColaDePrioridad cp = new repCP;
-    cp->colaPrioridad = new TCadena[N];
-    for (iterador = 0; iterador < N; iterador++) {
-        cp->colaPrioridad[iterador]= crearCadena();
-    }
-    cp->cant = 0;
-    cp->N = N;
-    return cp;
+	
+	TColaDePrioridad coso = new repCP;
+	coso->tope = 1;
+	coso->N = N;
+	coso->array = new TInfo[N+1];
+	coso->posiciones = new nat[N + 1];
+	for(nat i = 1; i<N+1;i++)
+		coso->array[i] = NULL;
+	for(nat i = 0; i<N+1;i++)
+	coso->posiciones[i] = 0;
+	return coso;
 }
 
 
-/*
-  Devuelve el valor máximo que puede tener un elemento de 'cp', que es el
-  parámetro de crearCP.
-  El tiempo de ejecución en el peor caso es O(1).
- */
+
 nat rangoCP(TColaDePrioridad cp){
 	return cp->N;
 }
 
-/*
-  Inserta 'elem' en 'cp'. La prioridad asociada a 'elem' es 'valor'.
-  Precondición 1 <= elem <= rangoCP(cp).
-  Precondición: !estaEnCp(elem, cp).
-  Devuelve 'cp'.
-  El tiempo de ejecución en el peor caso es O(log N), siendo 'N' el parámetro
-  pasado en crearCP.
- */
+
+ static nat filtradoAscendente(TColaDePrioridad &h, nat pos){
+  nat valorRetornado = 0;
+  TInfo cambiar = h->array[pos];
+  while ((pos>1) && (natInfo(h->array[pos/2])> natInfo(cambiar))){
+    h->array[pos] = h->array[pos/2];
+    h->posiciones[natInfo(h->array[pos/2])] = pos;
+    pos = pos/2;
+  }
+  h->array[pos] = cambiar;
+  valorRetornado = pos;
+  return valorRetornado;
+}
+
+static void filtrado_descendente(TColaDePrioridad &h, nat n, nat pos){
+  bool salir = false;
+  TInfo cambiar = h->array[h->tope-1];
+  while(!salir && 2*pos<= n){
+    nat hijo = 2*pos;
+    if ((hijo+1 <= n) && (natInfo(h->array[hijo+1]) < natInfo(h->array[hijo]))){
+      hijo = hijo+1;
+    }
+    if (natInfo(h->array[hijo]) < natInfo(cambiar)){
+      h->array[pos] = h->array[hijo];
+      h->posiciones[natInfo(h->array[pos])] = pos;
+      pos = hijo;
+    }
+    else salir = true;	
+  }
+  h->array[pos] = cambiar;
+}
+
 TColaDePrioridad insertarEnCP(nat elem, double valor, TColaDePrioridad cp){
-	nat paraje = elem % cp->N;
-    TInfo cooperador=crearInfo(elem,valor);
-    cp->colaPrioridad[paraje]=insertarAlFinal(cooperador,cp->colaPrioridad[paraje]);
-    cp->cant++;
+	cp->tope = cp->tope+1;
+	TInfo i=crearInfo(elem,valor);
+	cp->array[cp->tope-1] = i;
+	nat pos = filtradoAscendente(cp , cp->tope-1 );
+	int agrega = natInfo(i);
+	cp->posiciones[agrega] = pos;
 	return cp;
 }
 
-/*
-  Devuelve 'true' si y solo si en 'cp' no hay elementos.
-  El tiempo de ejecución en el peor casos es O(1).
- */
+
 bool estaVaciaCP(TColaDePrioridad cp){
-	return cp->cant==0;
+	return (cp->tope ==1);
 }
 
-/*
-  Devuelve el elemento prioritario de 'cp'.
-  Precondición: !estaVacioCP(cp).
-  El tiempo de ejecución en el peor casos es O(1).
- */
+
 nat prioritario(TColaDePrioridad cp){
-return 1;
+return natInfo(cp->array[1]);
 }
 
-/*
-  Elimina de 'cp' el elemento prioritario.
-  Precondición: !estaVacioCP(cp).
-  Devuelve 'cp'.
-  El tiempo de ejecución en el peor caso es O(log N), siendo 'N' el parámetro
-  pasado en crearCP.
- */
 TColaDePrioridad eliminarPrioritario(TColaDePrioridad cp){
-return cp;
+  nat agrega = natInfo(cp->array[1]);
+  liberarInfo(cp->array[1]);
+  cp->posiciones[agrega] = 0;
+  filtrado_descendente(cp, cp->tope-1, 1);
+  cp->tope = cp->tope-1;
+  return cp;
 }
 
-
-/*
-  Devuelve 'true' si y solo si 'elem' es un elemento de 'cp'.
-  El tiempo de ejecución en el peor caso es O(1).
- */
 bool estaEnCP(nat elem, TColaDePrioridad cp){
-	int paraje = elem % cp->N;
-    TLocalizador elValorDeRetorno=siguienteClave(elem,inicioCadena(cp->colaPrioridad[paraje]),cp->colaPrioridad[paraje]);
-    return (elValorDeRetorno!=NULL);
+	return cp->posiciones[elem] != 0;
 }
 
-/*
-  Devuelve el valor de prioridad asociado a 'elem'.
-  Precondición: estaEnCp(elem, cp).
-  El tiempo de ejecución en el peor caso es O(1).
- */
 
 double prioridad(nat elem, TColaDePrioridad cp){
-	int paraje = elem % cp->N;
-    TLocalizador gps= finalCadena(cp->colaPrioridad[paraje]);
-    gps= anteriorClave(elem, gps, cp->colaPrioridad[paraje]);
-    return realInfo(infoCadena(gps,cp->colaPrioridad[paraje]));
+	return realInfo(cp->array[cp->posiciones[elem]]);
 }
 
-/*
-  Modifica el valor de la propiedad asociada a 'elem'; pasa a ser 'valor'.
-  Precondición: estaEnCp(elem, cp).
-  Devuelve 'cp'.
-  El tiempo de ejecución en el peor caso es O(log N), siendo 'N' el parámetro
-  pasado en crearCP.
- */
-TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
-	int paraje = elem % cp->N;
-	TInfo cooperador=crearInfo(elem,valor);
-	cp->colaPrioridad[paraje]=insertarAlFinal(cooperador,cp->colaPrioridad[paraje]);
-	return cp;
+ //modificar
+ static void filtradoAscendente2(TColaDePrioridad &c, nat pos){
+  if((pos > 1) && (realInfo(c->array[pos/2]) > realInfo(c->array[pos]))){
+    c->posiciones[natInfo(c->array[pos/2])]= pos;
+    c->posiciones[natInfo(c->array[pos])]= pos/2;
+    TInfo aux = c->array[pos/2];
+    c->array[pos/2] = c->array[pos];
+    c->array[pos]= aux;
+    filtradoAscendente2(c,pos/2);
+  }
 }
-
-/*
-  Libera la menoria asignada a 'cp'.
-  El tiempo de ejecución en el peor caso es O(N), siendo 'N' el parámetro
-  pasado en crearCP.
- */
-void liberarCP(TColaDePrioridad cp){
-	for (nat i= 0; i < (cp->N); i++) {
-            liberarCadena(cp->colaPrioridad[i]);
+static void filtrado_descendente2(TColaDePrioridad &cp,nat pos,nat tope){
+  TInfo aux = cp->array[pos];
+  bool bandera = false;
+  while((2*pos <= tope) && (!bandera)){
+    nat hijo = 2*pos;
+    if((hijo+1 <= tope) && (realInfo(cp->array[hijo+1]) < realInfo(cp->array[hijo]))){
+      hijo ++;
     }
-    delete[] cp->colaPrioridad;
-    delete cp;
+    cp->posiciones[natInfo(cp->array[pos*2])] = cp->posiciones[natInfo(cp->array[pos*2])] / 2;
+    cp->posiciones[natInfo(cp->array[pos])] = cp->posiciones[natInfo(cp->array[pos])] * 2;
+    if(realInfo(aux) > realInfo(cp->array[hijo])){
+      cp->array[pos] = cp->array[hijo];
+      pos= hijo;
+    }else{
+      bandera = true ;
+    }
+  }
+  cp->array[pos]= aux;
+  }
+TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
+ 
+  int i = cp->posiciones[elem];
+  liberarInfo(cp->array[i]);
+  TInfo nuevo = crearInfo(elem,valor);
+  cp->array[i] = nuevo;
+  if( i == 1){
+    filtrado_descendente2(cp,cp->tope,i);
+  }else if(realInfo(cp->array[i]) < realInfo(cp->array[cp->posiciones[i/2]])){
+    filtradoAscendente2(cp,i);
+  }else filtrado_descendente2(cp,cp->tope,i);
+  return cp;
+}
+
+
+void liberarCP(TColaDePrioridad cp){
+	 if (cp != NULL){
+    if (cp->tope >1)
+      for(nat i = 1; i< cp->tope; i++)
+        liberarInfo(cp->array[i]);
+    delete [] cp->array;
+    delete [] cp->posiciones;
+  }
+  delete cp;
 }
