@@ -333,12 +333,14 @@ int main() {
 
     } else if (!strcmp(nom_comando, "arregloAAvl")) {
       TArregloTope elems = leerArregloOrdenado();
-      printf("\n");
-      if (elems.tope > 0) {
-        liberarAvl(avl);
+      liberarAvl(avl);
+      if (elems.tope == 0)
+        avl = crearAvl();
+      else {
         avl = arregloAAvl(elems.datos, elems.tope);
         delete[] elems.datos;
       }
+      printf("\n");
 
     } else if (!strcmp(nom_comando, "avlMin")) {
       nat h = leerNat();
@@ -373,36 +375,46 @@ int main() {
 
     } else if (!strcmp(nom_comando, "arregloAConjunto")) {
       TArregloTope elems = leerArregloOrdenado();
-      if (elems.tope > 0) {
-        liberarConjunto(conj);
+      liberarConjunto(conj);
+      if (elems.tope == 0)
+        conj = crearConjunto();
+      else {
         conj = arregloAConjunto(elems.datos, elems.tope);
+        delete[] elems.datos;
       }
       printf("Arreglo a conjunto con %d elementos.\n", elems.tope);
-      delete[] elems.datos;
 
     } else if (!strcmp(nom_comando, "unionDeConjuntos")) {
       TArregloTope elems = leerArregloOrdenado();
-      if (elems.tope > 0) {
-        TConjunto a = arregloAConjunto(elems.datos, elems.tope);
-        TConjunto alias = conj;
-        conj = unionDeConjuntos(alias, a);
-        liberarConjunto(alias);
-        liberarConjunto(a);
+      TConjunto a;
+      if (elems.tope == 0)
+        a = crearConjunto();
+      else {
+        a = arregloAConjunto(elems.datos, elems.tope);
+        delete[] elems.datos;
       }
+      TConjunto alias = conj;
+      conj = unionDeConjuntos(alias, a);
+      liberarConjunto(alias);
+      liberarConjunto(a);
+
       printf("Union.\n");
-      delete[] elems.datos;
 
     } else if (!strcmp(nom_comando, "diferenciaDeConjuntos")) {
       TArregloTope elems = leerArregloOrdenado();
-      if (elems.tope > 0) {
-        TConjunto a = arregloAConjunto(elems.datos, elems.tope);
-        TConjunto alias = conj;
-        conj = diferenciaDeConjuntos(alias, a);
-        liberarConjunto(alias);
-        liberarConjunto(a);
+      TConjunto a;
+      if (elems.tope == 0)
+        a = crearConjunto();
+      else {
+        a = arregloAConjunto(elems.datos, elems.tope);
+        delete[] elems.datos;
       }
+      TConjunto alias = conj;
+      conj = diferenciaDeConjuntos(alias, a);
+      liberarConjunto(alias);
+      liberarConjunto(a);
+
       printf("Diferencia.\n");
-      delete[] elems.datos;
 
     } else if (!strcmp(nom_comando, "iteradorDeConjunto")) {
       TIterador itC = iteradorDeConjunto(conj);
@@ -744,15 +756,19 @@ int main() {
       // nueva
     } else if (!strcmp(nom_comando, "interseccionDeConjuntos")) {
       TArregloTope elems = leerArregloOrdenado();
-      if (elems.tope > 0) {
-        TConjunto a = arregloAConjunto(elems.datos, elems.tope);
-        TConjunto alias = conj;
-        conj = interseccionDeConjuntos(alias, a);
-        liberarConjunto(alias);
-        liberarConjunto(a);
+      TConjunto a;
+      if (elems.tope == 0)
+        a = crearConjunto();
+      else {
+        a = arregloAConjunto(elems.datos, elems.tope);
+        delete[] elems.datos;
       }
+      TConjunto alias = conj;
+      conj = interseccionDeConjuntos(alias, a);
+      liberarConjunto(alias);
+      liberarConjunto(a);
+
       printf("Intersección.\n");
-      delete[] elems.datos;
 
     } else if (!strcmp(nom_comando, "esCamino")) {
       TCadena camino = leerCadena();

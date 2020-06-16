@@ -74,7 +74,7 @@ $(EJECUTABLE): $(ODIR)/$(PRINCIPAL).o $(OS)
 	$(LD) $(CCFLAGS) $^ -o $@
 
 # casos de prueba
-CASOS = 00 01 02 03 04 05 06 07 08 09 10 200 301 302 t-ultimos t-avl t-map t-cp
+CASOS = 00 01 02 03 04 05 06 07 08 09 10 11 200 301 302 t-ultimos t-avl t-map t-cp
 
 
 # cadena de archivos, con directorio y extensión
