@@ -5,6 +5,7 @@
 #include <stdio.h>  
 #include "../include/pila.h"
 #include "../include/colaAvls.h"
+#include "../include/iterador.h"
 #include "limits.h"
 
 struct repAvl{
@@ -174,24 +175,21 @@ nat alturaDeAvl(TAvl avl){
   elementos de 'avl'.
  */
  
- static TIterador *en_orden_rec(TIterador *res, nat &tope, TAvl avl){
+ static TIterador en_orden_rec(TIterador res, TAvl avl){
 	if (!estaVacioAvl(avl)){
-		res = en_orden_rec(res, tope, izqAvl(avl));
-		res[tope] = raizAvl(avl);
-		tope++;
-		res = en_orden_rec(res, tope, derAvl(avl));
+		res = en_orden_rec(res, izqAvl(avl));
+		res = agregarAIterador(raizAvl(avl),res);
+		res = en_orden_rec(res, derAvl(avl));
 	}
 	return res;
 }
 
 TIterador enOrdenAvl(TAvl avl){
-	TIterador *larespu;
+	TIterador larespu=crearIterador();
 	if (estaVacioAvl(avl))
 		larespu = NULL;
 	else{
-		larespu = new TInfo[cantidadEnAvl(avl)];
-		nat tope = 0;
-		larespu = en_orden_rec(larespu, tope, avl);
+		larespu = en_orden_rec(larespu, avl);
 	}
 	return larespu;
 }
@@ -208,7 +206,7 @@ TIterador enOrdenAvl(TAvl avl){
   derecho.
   El tiempo de ejecución en el peor caso es O(n).
  */
- static TAvl a2avl_rec(TInfo *infos, int inf, int sup){
+ static TAvl a2avl_rec(nat *infos, int inf, int sup){
 	TAvl larespu;
 	if (inf > sup)
 		larespu = NULL;
@@ -225,7 +223,7 @@ TIterador enOrdenAvl(TAvl avl){
 }
 
 TAvl arregloAAvl(nat *elems, nat n){
-	return a2avl_rec(infos, 0, n - 1);
+	return a2avl_rec(elems, 0, n - 1);
 }
 
 /*
@@ -246,32 +244,25 @@ TAvl arregloAAvl(nat *elems, nat n){
         }
         else if (h == 1){
                 larespu.ultimo = primero;
-                char *real = new char[1];
-                real[0] = '\0';
-                TInfo agrego = crearInfo(primero, real);
+                
                 larespu.avl = new repAvl;
-                larespu.avl->dato = agrego;
+                larespu.avl->dato = primero;
                 larespu.avl->altura = 1;
                 larespu.avl->cantidad = 1;
                 larespu.avl->izq = larespu.avl->der = NULL;
         }
         else{
-                int num;
+               
                 avlUltimo avlpri=avl_min_rec(h-1,primero);
                 avlUltimo avlseg=avl_min_rec(h-2,1);
                 larespu.ultimo = cantidadEnAvl(avlpri.avl) + cantidadEnAvl(avlseg.avl) + primero;
-				liberar_avl(avlseg.avl);
-                if (h==2)
-                        num = natInfo(raizAvl(avlpri.avl)) + 1;
-                else
-                        num = avlpri.ultimo + 1;
-                char *poner = new char[1];
-                poner[0] = '\0';
-                TInfo agrego = crearInfo(num, poner);
+				liberarAvl(avlseg.avl);
+				
+				
                 larespu.avl = new repAvl;
-                larespu.avl->dato = agrego;
+                larespu.avl->dato = primero;
                 larespu.avl->izq = avlpri.avl;
-                larespu.avl->der = avl_min_rec(h-2,natInfo(raizAvl(larespu.avl))+1).avl;
+                larespu.avl->der = avl_min_rec(h-2,raizAvl(larespu.avl)+1).avl;
                 larespu.avl->altura = max(alturaDeAvl(larespu.avl->izq), alturaDeAvl(larespu.avl->der)) + 1;
                 larespu.avl->cantidad = cantidadEnAvl(larespu.avl->izq) + cantidadEnAvl(larespu.avl->der) + 1;
         }
@@ -303,7 +294,7 @@ void imprimirAvl(TAvl avl){
 		encolar(NULL, trasero);
 		bool terminar=false;
 		TPila alcalina=crearPila(cantidadEnAvl(avl)+alturaDeAvl(avl));
-		while (!estaVaciaPila(trasero) && !terminar){
+		while (!estaVaciaColaAvls(trasero) && !terminar){
 			TAvl arbol = frente(trasero);
 			if (arbol != NULL){
 				apilar(raizAvl(arbol),alcalina);

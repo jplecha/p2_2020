@@ -1,10 +1,16 @@
-#include "../include/mapping.h"
+/*5213903*/
 #include "../include/cadena.h"
 #include "../include/info.h"
+#include "../include/avl.h"
+#include "../include/conjunto.h"
+#include "../include/iterador.h"
+#include <stddef.h>
+#include "../include/colaDePrioridad.h"
+#include "../include/mapping.h"
 #include "../include/utils.h"
 
 struct repMap{
-  TCadena cadena;
+  TCadena *cadena;
   nat M;
   nat cant;
 };
@@ -15,8 +21,9 @@ struct repMap{
  */
 TMapping crearMap(nat M){
 	TMapping map=new repMap;
-	map->cadena=crearCadena();
+	map->cadena=NULL;
 	map->M=M;
+	map->cant=0;
 	return map;
 }
 
@@ -28,11 +35,14 @@ TMapping crearMap(nat M){
  */
 TMapping asociarEnMap(nat clave, double valor, TMapping map){
 	
-	TInfo nuevo;
-	nuevo.natural=clave;
-	nuevo.real=valor;
-	map->cadena=insertarAlFinal(nuevo,map->cadena);
-    map->M--;
+	TInfo nuevo=crearInfo(clave,valor);
+	nat pos= clave % map->M;
+	if(map->cadena[pos]==NULL){
+	    map->cadena[pos]=insertarAlFinal(nuevo,crearCadena());
+	}else{
+		map->cadena[pos]=insertarAlFinal(nuevo, map->cadena[pos]);
+	}
+    map->cant++;
     return map;
 }
 
@@ -45,10 +55,13 @@ TMapping asociarEnMap(nat clave, double valor, TMapping map){
   El tiempo de ejecución es O(1) en promedio.
  */
 TMapping desasociarEnMap(nat clave, TMapping map){
-  if(esClave(clave,map)){
-      map->cadena=removerDeCadena(posNat(clave,map->cadena),map->cadena);
+  nat pos=clave % map->M;
+  TLocalizador loc=inicioCadena(map->cadena[pos]);
+  while (natInfo(infoCadena(loc, map->cadena[pos]))!=clave){
+      loc=siguiente(loc, map->cadena[pos]);
   }
-  map->M++;
+  map->cadena[pos]=removerDeCadena(loc,map->cadena[pos]);
+  map->cant--;
   return map;
 }
 
@@ -58,7 +71,13 @@ TMapping desasociarEnMap(nat clave, TMapping map){
   El tiempo de ejecución es O(1) en promedio.
  */
 bool existeAsociacionEnMap(nat clave, TMapping map){
-	return posNat(clave,map->cadena);
+	nat pos=clave % map->M;
+	TLocalizador loc=inicioCadena(map->cadena[pos]);
+	while (esLocalizador(loc) && natInfo(infoCadena(loc, map->cadena[pos]))!=clave){
+      loc=siguiente(loc, map->cadena[pos]);
+	}
+	
+	return esLocalizador(loc);
 }
 
 /*
@@ -67,10 +86,13 @@ bool existeAsociacionEnMap(nat clave, TMapping map){
   El tiempo de ejecución es O(1) en promedio.
  */
 double valorEnMap(nat clave, TMapping map){
-  TInfo aux;
-  nat pos=posNat(clave, map->cadena);
-  aux=infoLista(pos,map->cadena);
-  return aux.real;
+  nat pos=clave % map->M;
+	TLocalizador loc=inicioCadena(map->cadena[pos]);
+	while (natInfo(infoCadena(loc, map->cadena[pos]))!=clave){
+      loc=siguiente(loc, map->cadena[pos]);
+	}
+	
+	return realInfo(infoCadena(loc, map->cadena[pos]));
 }
 
 /*
@@ -79,7 +101,7 @@ double valorEnMap(nat clave, TMapping map){
   El tiempo de ejecución es O(1).
  */
 bool estaLlenoMap(TMapping map){
-	return M==0;
+	return map->M==map->cant;
 }
 
 /*
@@ -88,5 +110,9 @@ bool estaLlenoMap(TMapping map){
   pasado en crearMap.
  */
 void liberarMap(TMapping map){
-
+	for (nat i=0; i<map->M;i++){
+		liberarCadena(map->cadena[i]);
+	}
+	delete[] map->cadena;
+	delete map;
 }

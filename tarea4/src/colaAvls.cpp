@@ -1,8 +1,14 @@
+#include "../include/avl.h"
+#include "../include/utils.h"
+#include "../include/info.h"
+#include <stdio.h>  
+#include "../include/pila.h"
 #include "../include/colaAvls.h"
-
+#include "../include/iterador.h"
+#include "limits.h"
 
 struct Nodo{
-	avl_t arbol;
+	TAvl arbol;
 	Nodo *sig;
 	Nodo *ant;
 };
@@ -26,9 +32,9 @@ TColaAvls crearColaAvls(){
   El tiempo de ejecución en el peor caso es O(1).
  */
 TColaAvls encolar(TAvl avl, TColaAvls c){
-	if (!esVacioAvl(b)) {
+	if (!estaVacioAvl(avl)) {
 		Nodo *agregar = new Nodo;
-		agregar->arbol = b;
+		agregar->arbol = avl;
 		agregar->ant = NULL;
 		agregar->sig = c->primero;
 		if (c->primero != NULL) c->primero->ant = agregar;
@@ -44,6 +50,7 @@ TColaAvls encolar(TAvl avl, TColaAvls c){
 		else c->ultimo = agregar;
 		c->primero = agregar;
 	}
+	return c;
 }
 
 /*
@@ -62,6 +69,7 @@ TColaAvls desencolar(TColaAvls c){
 		c->primero = NULL;
 		delete borrar;
 	}
+	return c;
 }
 
 /*

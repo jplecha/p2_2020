@@ -62,6 +62,19 @@ bool esCamino(TCadena c, TBinario b){
 	return (!esVacioBinario(b) && laResp && !esVacioBinario(derecho(b)) && !esVacioBinario(izquierdo(b)));
 
 }*/
+
+/*
+  Devuelve un 'TConjunto' con los elementos que pertenecen a 'c1' y 'c2'.
+  El 'TConjunto' resultado no comparte memoria ni con 'c1' no con 'c2'.
+  El tiempo de ejecucion en el peor caso es O(n1 + n2 + n.log n),
+  siendo 'n1' y 'n2' la cantidad de elementos de 'c1' y 'c2' respectivamente y
+  'n' la del 'TConjunto' resultado.
+ */
+TConjunto interseccionDeConjuntos(TConjunto c1, TConjunto c2){
+	TConjunto res=diferenciaDeConjuntos(c1, diferenciaDeConjuntos(c1,c2));
+	return res;
+}
+
 bool esCamino(TCadena c, TBinario b){
 	TLocalizador varAux=inicioCadena(c);
 	while(varAux && b && natInfo(infoCadena(varAux,c)) == natInfo(raiz(b))){

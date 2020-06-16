@@ -32,6 +32,7 @@ TConjunto singleton(nat elem){
 	return larespu;
 }
 
+
 /*
   Devuelve un 'TConjunto' con los elementos que pertenecen a 'c1' o 'c2'.
   El 'TConjunto' resultado no comparte memoria ni con 'c1' no con 'c2'.
@@ -40,37 +41,37 @@ TConjunto singleton(nat elem){
  */
 TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
 	TConjunto solucion = crearConjunto();
-	TIterador iterac1 = iteradorConjunto(c1);
-	TIterador iterac2 = iteradorConjunto(c2);
+	TIterador iterac1 = iteradorDeConjunto(c1);
+	TIterador iterac2 = iteradorDeConjunto(c2);
 	reiniciarIterador(iterac1);
 	reiniciarIterador(iterac2);	
-	if (esVacioConjunto(c1)){
+	if (estaVacioConjunto(c1)){
 		while (estaDefinidaActual(iterac2)){	
-		insertarEnAvl(copiaInfo(actualEnIterador(iterac2)), solucion->arbol);
+		insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
 		avanzarIterador(iterac2);
 		}	
 	}
-	else if (esVacioConjunto(c2)){
+	else if (estaVacioConjunto(c2)){
 		while (estaDefinidaActual(iterac1)){	
-		insertarEnAvl(copiaInfo(actualEnIterador(iterac1)), solucion->arbol);
+		insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
 		avanzarIterador(iterac1);
 		}	
 	}
 	else{	
 		
 	while ((estaDefinidaActual(iterac1)) && (estaDefinidaActual(iterac2))){
-			if (realInfo(actualEnIterador(iterac1))<realInfo(actualEnIterador(iterac2))){
-				insertarEnAvl(copiaInfo(actualEnIterador(iterac1)), solucion->arbol);	
+			if (actualEnIterador(iterac1)<actualEnIterador(iterac2)){
+				insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);	
 				avanzarIterador(iterac1);
 			}
 			else {
-				if (realInfo(actualEnIterador(iterac1))>realInfo(actualEnIterador(iterac2))){
+				if (actualEnIterador(iterac1)>actualEnIterador(iterac2)){
 	
-				insertarEnAvl(copiaInfo(actualEnIterador(iterac2)), solucion->arbol);
+				insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
 				avanzarIterador(iterac2);
-			     } else	if (realInfo(actualEnIterador(iterac1))==realInfo(actualEnIterador(iterac2))){
+			     } else	if (actualEnIterador(iterac1)==actualEnIterador(iterac2)){
 				
-				insertarEnAvl(copiaInfo(actualEnIterador(iterac1)), solucion->arbol);
+				insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
 				avanzarIterador(iterac2);
 				avanzarIterador(iterac1);
 				}
@@ -78,13 +79,13 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
 		}
 	while (estaDefinidaActual(iterac1)){
 			
-		insertarEnAvl(copiaInfo(actualEnIterador(iterac1)), solucion->arbol);
+		insertarEnAvl(actualEnIterador(iterac1), solucion->arbol);
 		avanzarIterador(iterac1);
 	}	
 	
 	while (estaDefinidaActual(iterac2)){
 			
-		insertarEnAvl(copiaInfo(actualEnIterador(iterac2)), solucion->arbol);
+		insertarEnAvl(actualEnIterador(iterac2), solucion->arbol);
 		avanzarIterador(iterac2);
 	}	
 }
@@ -102,17 +103,17 @@ TConjunto unionDeConjuntos(TConjunto c1, TConjunto c2){
  */
 TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
 	TConjunto solucion = crearConjunto();
-	TIterador iterac1 = iteradorConjunto(c1);
-	TIterador iterac2 = iteradorConjunto(c2);
+	TIterador iterac1 = iteradorDeConjunto(c1);
+	TIterador iterac2 = iteradorDeConjunto(c2);
 	reiniciarIterador(iterac1);
 	reiniciarIterador(iterac2);
-	info_t agregar;
+	nat agregar;
 
-	if (esVacioConjunto(c1)){
+	if (estaVacioConjunto(c1)){
 	}
-	else if (esVacioConjunto(c2)){
+	else if (estaVacioConjunto(c2)){
 		while (estaDefinidaActual(iterac1)){	
-		agregar = copiaInfo(actualEnIterador(iterac1));
+		agregar = actualEnIterador(iterac1);
 		insertarEnAvl(agregar, solucion->arbol);
 		avanzarIterador(iterac1);
 		}	
@@ -120,22 +121,22 @@ TConjunto diferenciaDeConjuntos(TConjunto c1, TConjunto c2){
 	else{	
 		
 	while ((estaDefinidaActual(iterac1)) && (estaDefinidaActual(iterac2))){
-			if (realInfo(actualEnIterador(iterac1))<realInfo(actualEnIterador(iterac2))){
-				agregar = copiaInfo(actualEnIterador(iterac1));
+			if (actualEnIterador(iterac1)<actualEnIterador(iterac2)){
+				agregar = actualEnIterador(iterac1);
 				insertarEnAvl(agregar, solucion->arbol);	
 				avanzarIterador(iterac1);
 			}
 			else {
-				if (realInfo(actualEnIterador(iterac1))>realInfo(actualEnIterador(iterac2))){
+				if (actualEnIterador(iterac1)>actualEnIterador(iterac2)){
 				avanzarIterador(iterac2);
-			     } else	if (realInfo(actualEnIterador(iterac1))==realInfo(actualEnIterador(iterac2))){
+			     } else	if (actualEnIterador(iterac1)==actualEnIterador(iterac2)){
 				avanzarIterador(iterac2);
 				avanzarIterador(iterac1);
 				}
 			}
 		}
 	while (estaDefinidaActual(iterac1)){	
-		agregar = copiaInfo(actualEnIterador(iterac1));
+		agregar =actualEnIterador(iterac1);
 		insertarEnAvl(agregar, solucion->arbol);
 		avanzarIterador(iterac1);
 	}	
@@ -157,7 +158,7 @@ bool perteneceAConjunto(nat elem, TConjunto c){
 	if (c != NULL){
 		TAvl contiene = buscarEnAvl(elem, c->arbol);
 		if (contiene != NULL)
-			esta = sonIguales(elem, raizAvl(contiene));
+			esta = elem == raizAvl(contiene);
 	}
 	return esta;
 }
@@ -203,13 +204,10 @@ TConjunto arregloAConjunto(nat *elems, nat n){
   elementos de 'c'.
  */
 TIterador iteradorDeConjunto(TConjunto c){
-	TIterador res = crearIterador();
-	TInfo *infos = enOrdenAvl(c->arbol);
-	for (nat i = 0; i < cantidadEnAvl(c->arbol); i++)
-		agregarAIterador(infos[i], res);
-	bloquearIterador(res);
-	delete[] infos;
-	return res;
+	
+	TIterador infos = enOrdenAvl(c->arbol);
+	
+	return infos;
 }
 
 

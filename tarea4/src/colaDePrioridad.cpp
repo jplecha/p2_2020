@@ -1,3 +1,10 @@
+/*5213903*/
+#include "../include/cadena.h"
+#include "../include/info.h"
+#include "../include/avl.h"
+#include "../include/conjunto.h"
+#include "../include/iterador.h"
+#include <stddef.h>
 #include "../include/colaDePrioridad.h"
 
 struct repCP {
@@ -48,6 +55,7 @@ TColaDePrioridad insertarEnCP(nat elem, double valor, TColaDePrioridad cp){
     TInfo cooperador=crearInfo(elem,valor);
     cp->colaPrioridad[paraje]=insertarAlFinal(cooperador,cp->colaPrioridad[paraje]);
     cp->cant++;
+	return cp;
 }
 
 /*
@@ -64,7 +72,7 @@ bool estaVaciaCP(TColaDePrioridad cp){
   El tiempo de ejecución en el peor casos es O(1).
  */
 nat prioritario(TColaDePrioridad cp){
-
+return 1;
 }
 
 /*
@@ -75,7 +83,7 @@ nat prioritario(TColaDePrioridad cp){
   pasado en crearCP.
  */
 TColaDePrioridad eliminarPrioritario(TColaDePrioridad cp){
-
+return cp;
 }
 
 
@@ -94,18 +102,6 @@ bool estaEnCP(nat elem, TColaDePrioridad cp){
   Precondición: estaEnCp(elem, cp).
   El tiempo de ejecución en el peor caso es O(1).
  */
- static TLocalizador anteriorClave(int clave, TLocalizador gps, TCadena cad){
-  TLocalizador elValorDeRetorno=gps;
-  if(esVaciaCadena(cad)){
-    elValorDeRetorno=NULL;
-  }else{
-    while(esLocalizador(elValorDeRetorno)&&natInfo(infoCadena(elValorDeRetorno,cad))!=clave){
-      elValorDeRetorno=anterior(elValorDeRetorno,cad);
-    }
-    
-  }
-  return elValorDeRetorno;
-}
 
 double prioridad(nat elem, TColaDePrioridad cp){
 	int paraje = elem % cp->N;
@@ -134,7 +130,7 @@ TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
   pasado en crearCP.
  */
 void liberarCP(TColaDePrioridad cp){
-	for (int i= 0; i < (cp->N); i++) {
+	for (nat i= 0; i < (cp->N); i++) {
             liberarCadena(cp->colaPrioridad[i]);
     }
     delete[] cp->colaPrioridad;
