@@ -152,21 +152,21 @@ nat alturaDeAvl(TAvl avl){
 }
 
 
-static void funcionAuxiliarParaEnOrdenAvl(TAvl &avl,TIterador res){
+static void funcionAuxiliarParaEnOrdenAvl(TAvl &avl,TIterador laPropiaSolucion){
 	//terminada
   if(avl!= NULL){
-    funcionAuxiliarParaEnOrdenAvl(avl->izq,res);
-    res = agregarAIterador(avl->dato,res);
-    funcionAuxiliarParaEnOrdenAvl(avl->der,res);
+    funcionAuxiliarParaEnOrdenAvl(avl->izq,laPropiaSolucion);
+    laPropiaSolucion = agregarAIterador(avl->dato,laPropiaSolucion);
+    funcionAuxiliarParaEnOrdenAvl(avl->der,laPropiaSolucion);
   }
 }
 
 TIterador enOrdenAvl(TAvl avl){
 	//terminada
-    TIterador res;
-    res= crearIterador();
-    funcionAuxiliarParaEnOrdenAvl(avl,res);
-  return res;
+    TIterador laPropiaSolucion;
+    laPropiaSolucion= crearIterador();
+    funcionAuxiliarParaEnOrdenAvl(avl,laPropiaSolucion);
+  return laPropiaSolucion;
 }
 
  static TAvl funcionAuxiliarAvlRec(nat *infos, int sup, int inf){
@@ -192,86 +192,86 @@ TAvl arregloAAvl(nat *elems, nat n){
 	return funcionAuxiliarAvlRec(elems, fin, 0);
 }
 
-static avlUltimo funcionAuxiliarAvlMinAux(nat primero, nat h){
+static avlUltimo funcionAuxiliarAvlMinAux(nat primero, nat alturita){
 	//terminada
-  avlUltimo res;
-  if (h ==0){
-    res.avl = NULL;
-    res.ultimo = primero - 1;
-  }else  if (h== 1){
-	res.avl = new repAvl;
+  avlUltimo laPropiaSolucion;
+  if (alturita ==0){
+    laPropiaSolucion.avl = NULL;
+    laPropiaSolucion.ultimo = primero - 1;
+  }else  if (alturita== 1){
+	laPropiaSolucion.avl = new repAvl;
     
-    res.avl->altura = 1;
-	res.avl->cantidad = 1;
-	res.avl -> dato = primero;
-    res.avl->izq = NULL;
-	res.avl->der = NULL;
-    res.ultimo = primero;   
+    laPropiaSolucion.avl->altura = 1;
+	laPropiaSolucion.avl->cantidad = 1;
+	laPropiaSolucion.avl -> dato = primero;
+    laPropiaSolucion.avl->izq = NULL;
+	laPropiaSolucion.avl->der = NULL;
+    laPropiaSolucion.ultimo = primero;   
   }else{
-    res.avl = new repAvl;
-    avlUltimo izq = funcionAuxiliarAvlMinAux(primero,h-1);
-    res.avl->dato =izq.ultimo +1;
-    res.avl->izq = izq.avl;
-    avlUltimo der = funcionAuxiliarAvlMinAux(izq.ultimo+2,h-2);
-    res.avl->der= der.avl;
-    res.ultimo = der.ultimo;
+    laPropiaSolucion.avl = new repAvl;
+    avlUltimo izq = funcionAuxiliarAvlMinAux(primero,alturita-1);
+    laPropiaSolucion.avl->dato =izq.ultimo +1;
+    laPropiaSolucion.avl->izq = izq.avl;
+    avlUltimo der = funcionAuxiliarAvlMinAux(izq.ultimo+2,alturita-2);
+    laPropiaSolucion.avl->der= der.avl;
+    laPropiaSolucion.ultimo = der.ultimo;
    
-    res.avl->cantidad = cantidadEnAvl(izqAvl(res.avl)) + cantidadEnAvl(derAvl(res.avl)) + 1;
-	 res.avl->altura = elMayorDe(alturaDeAvl(res.avl->izq), alturaDeAvl(res.avl->der)) + 1;
+    laPropiaSolucion.avl->cantidad = cantidadEnAvl(izqAvl(laPropiaSolucion.avl)) + cantidadEnAvl(derAvl(laPropiaSolucion.avl)) + 1;
+	 laPropiaSolucion.avl->altura = elMayorDe(alturaDeAvl(laPropiaSolucion.avl->izq), alturaDeAvl(laPropiaSolucion.avl->der)) + 1;
   }
-  return res;
+  return laPropiaSolucion;
 }
 
 
-TAvl avlMin(nat h){
+TAvl avlMin(nat alturita){
 	//terminada
-  avlUltimo  res = funcionAuxiliarAvlMinAux(1,h);
-  return res.avl;
+  avlUltimo  laPropiaSolucion = funcionAuxiliarAvlMinAux(1,alturita);
+  return laPropiaSolucion.avl;
 }
 
 void imprimirAvl(TAvl avl){
 	//terminada
 	if (avl != NULL){
-		TColaAvls trasero = crearColaAvls();
-		encolar(avl, trasero);
-		encolar(NULL, trasero);
-		TPila alcalina=crearPila(cantidadEnAvl(avl)+alturaDeAvl(avl));
+		TColaAvls bombom = crearColaAvls();
+		encolar(avl, bombom);
+		encolar(NULL, bombom);
+		TPila pilacincovolts=crearPila(cantidadEnAvl(avl)+alturaDeAvl(avl));
 		bool terminar=false;
-		while (!terminar && !estaVaciaColaAvls(trasero)){
-			TAvl arbol = frente(trasero);
+		while (!terminar && !estaVaciaColaAvls(bombom)){
+			TAvl arbol = frente(bombom);
 			if (arbol == NULL){
 				
-				encolar(NULL, trasero);
-				apilar(INT_MAX, alcalina);
-				desencolar(trasero);
-				if(frente(trasero)==NULL){
+				encolar(NULL, bombom);
+				apilar(INT_MAX, pilacincovolts);
+				desencolar(bombom);
+				if(frente(bombom)==NULL){
 				terminar=true;
 				}
 			}else{
-				apilar(raizAvl(arbol),alcalina);
+				apilar(raizAvl(arbol),pilacincovolts);
 				if (arbol->der != NULL)
-					encolar(arbol->der, trasero);
+					encolar(arbol->der, bombom);
 				if (arbol->izq != NULL)
-					encolar(arbol->izq, trasero);
+					encolar(arbol->izq, bombom);
 					
-				desencolar(trasero);
+				desencolar(bombom);
 			}
 		}
-		desapilar(alcalina);
-		while(!estaVaciaPila(alcalina)){
+		desapilar(pilacincovolts);
+		while(!estaVaciaPila(pilacincovolts)){
 				
-                	if(cima(alcalina)!=INT_MAX){
-						printf("%d ", cima(alcalina));
+                	if(cima(pilacincovolts)!=INT_MAX){
+						printf("%d ", cima(pilacincovolts));
 					}else{   
 							printf("\n");
                         	
                     }
             
-                        desapilar(alcalina);
+                        desapilar(pilacincovolts);
 		}
 		printf("\n");
-		liberarColaAvls(trasero);
-		liberarPila(alcalina);
+		liberarColaAvls(bombom);
+		liberarPila(pilacincovolts);
 		
 	}
 }

@@ -46,13 +46,13 @@ TBinario insertarEnBinario(TInfo i, TBinario b){
 }
 
 TInfo mayor(TBinario b){
-	TInfo res;
+	TInfo laPropiaSolucion;
 	if(derecho(b)!=NULL){
-		res=mayor(b->der);
+		laPropiaSolucion=mayor(b->der);
 	}else{
-		res=b->dato;
+		laPropiaSolucion=b->dato;
 	}
-	return res; 	
+	return laPropiaSolucion; 	
 }
 
 TBinario removerMayor(TBinario b){
@@ -156,19 +156,19 @@ return b->der;
 
 TBinario buscarSubarbol(nat elem, TBinario b){
 	
-	TBinario res;
+	TBinario laPropiaSolucion;
 	if (esVacioBinario(b))
-		res = crearBinario();
+		laPropiaSolucion = crearBinario();
 	else {
 		
 		if(elem<natInfo(raiz(b)))
-			res = buscarSubarbol(elem, izquierdo(b));
+			laPropiaSolucion = buscarSubarbol(elem, izquierdo(b));
 		else if(elem>natInfo(raiz(b)))
-			res = buscarSubarbol(elem,derecho(b));
+			laPropiaSolucion = buscarSubarbol(elem,derecho(b));
 		else
-			res=b;
+			laPropiaSolucion=b;
 	}
-	return res;	
+	return laPropiaSolucion;	
 }
 
 nat alturaBinario(TBinario b){
@@ -200,19 +200,19 @@ double sumaUltimosPositivos(nat i, TBinario b){
    return suma_ultimos_positivos_aux(i,b);
 }
 
-static TCadena funcionAuxiliarParaLinealizacion(TBinario b, TCadena res){
+static TCadena funcionAuxiliarParaLinealizacion(TBinario b, TCadena laPropiaSolucion){
 	if(b){
-		res=funcionAuxiliarParaLinealizacion(b->izq,res);
+		laPropiaSolucion=funcionAuxiliarParaLinealizacion(b->izq,laPropiaSolucion);
 		TInfo copia=copiaInfo(b->dato);
-		res=insertarAlFinal(copia,res);
-		res=funcionAuxiliarParaLinealizacion(b->der,res);
+		laPropiaSolucion=insertarAlFinal(copia,laPropiaSolucion);
+		laPropiaSolucion=funcionAuxiliarParaLinealizacion(b->der,laPropiaSolucion);
 	}
-	return res;
+	return laPropiaSolucion;
 }
 
 TCadena linealizacion(TBinario b){
-	TCadena res = crearCadena();
-	return funcionAuxiliarParaLinealizacion(b,res);
+	TCadena laPropiaSolucion = crearCadena();
+	return funcionAuxiliarParaLinealizacion(b,laPropiaSolucion);
 }
 
  static bool existe(TBinario b, int cota){

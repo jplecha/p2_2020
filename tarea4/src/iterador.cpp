@@ -18,10 +18,10 @@ struct repIterador {
 };
 
 TIterador crearIterador(){
-	TIterador res=new repIterador;
-	res->actual = res->inicio=res->fin=NULL;
-	res->bloqueado=false;
-	return res;
+	TIterador laPropiaSolucion=new repIterador;
+	laPropiaSolucion->actual = laPropiaSolucion->inicio=laPropiaSolucion->fin=NULL;
+	laPropiaSolucion->bloqueado=false;
+	return laPropiaSolucion;
 }
 
 

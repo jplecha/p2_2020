@@ -23,9 +23,9 @@ bool esLocalizador(TLocalizador loc) {
 }
 
 TCadena crearCadena(){
-  TCadena res = new repCadena;
-  res->inicio=res->final=NULL;
-  return res;
+  TCadena laPropiaSolucion = new repCadena;
+  laPropiaSolucion->inicio=laPropiaSolucion->final=NULL;
+  return laPropiaSolucion;
 }
 
 
@@ -47,23 +47,23 @@ bool esVaciaCadena(TCadena cad){
 }
 
 TLocalizador inicioCadena(TCadena cad){
-  TLocalizador res;
+  TLocalizador laPropiaSolucion;
   if (esVaciaCadena(cad)){
-    res=NULL;
+    laPropiaSolucion=NULL;
   }else{
-    res=cad->inicio;
+    laPropiaSolucion=cad->inicio;
   }
-  return res;
+  return laPropiaSolucion;
 }
 
 TLocalizador finalCadena(TCadena cad){
-  TLocalizador res;
+  TLocalizador laPropiaSolucion;
   if (esVaciaCadena(cad)){
-    res=NULL;
+    laPropiaSolucion=NULL;
   }else{
-    res=cad->final;
+    laPropiaSolucion=cad->final;
   }
-  return res;
+  return laPropiaSolucion;
 }
 
 TInfo infoCadena(TLocalizador loc, TCadena cad){
@@ -72,24 +72,24 @@ TInfo infoCadena(TLocalizador loc, TCadena cad){
 
 TLocalizador siguiente(TLocalizador loc, TCadena cad){
   assert(localizadorEnCadena(loc, cad));
-  TLocalizador res;
+  TLocalizador laPropiaSolucion;
   if(esFinalCadena(loc, cad)){
-    res=NULL;
+    laPropiaSolucion=NULL;
   } else{
-    res= loc->siguiente;
+    laPropiaSolucion= loc->siguiente;
   }
-  return res;
+  return laPropiaSolucion;
 }
 
 TLocalizador anterior(TLocalizador loc, TCadena cad){
   assert(localizadorEnCadena(loc, cad));
-  TLocalizador res;
+  TLocalizador laPropiaSolucion;
   if(esInicioCadena(loc, cad)){
-    res=NULL;
+    laPropiaSolucion=NULL;
   } else{
-    res= loc->anterior;
+    laPropiaSolucion= loc->anterior;
   }
-  return res;
+  return laPropiaSolucion;
 }
 
 
@@ -103,24 +103,24 @@ bool localizadorEnCadena(TLocalizador loc, TCadena cad){
 }
 
 bool esFinalCadena(TLocalizador loc, TCadena cad){
-	bool res;
+	bool laPropiaSolucion;
 	if(esVaciaCadena(cad)){
-		res=false;
+		laPropiaSolucion=false;
 	}else{
-		res=(loc==cad->final);
+		laPropiaSolucion=(loc==cad->final);
 	}
-	return res;
+	return laPropiaSolucion;
 }
 
 
 bool esInicioCadena(TLocalizador loc, TCadena cad){
-	bool res;
+	bool laPropiaSolucion;
 	if(esVaciaCadena(cad)){
-		res=false;
+		laPropiaSolucion=false;
 	}else{
-		res=(loc==cad->inicio);
+		laPropiaSolucion=(loc==cad->inicio);
 	}
-	return res;
+	return laPropiaSolucion;
 }
 
 TCadena insertarAlFinal(TInfo i, TCadena cad){
@@ -180,33 +180,33 @@ void imprimirCadena(TCadena cad){
 }
 
 TLocalizador kesimo(nat k, TCadena cad){
-	TLocalizador res=inicioCadena(cad);
+	TLocalizador laPropiaSolucion=inicioCadena(cad);
 	if(k!=0){
 		nat cont=1;
-		while((res!=NULL) && (cont!=k)){
-			res=siguiente(res,cad);
+		while((laPropiaSolucion!=NULL) && (cont!=k)){
+			laPropiaSolucion=siguiente(laPropiaSolucion,cad);
 			cont++;
 		}
 	}else{
-		res=NULL;
+		laPropiaSolucion=NULL;
 	}
-	return res;
+	return laPropiaSolucion;
 }
 
 bool precedeEnCadena(TLocalizador loc1, TLocalizador loc2, TCadena cad){
-  bool res;
-  res = localizadorEnCadena(loc1, cad);
-  if(res){
+  bool laPropiaSolucion;
+  laPropiaSolucion = localizadorEnCadena(loc1, cad);
+  if(laPropiaSolucion){
     TLocalizador cursor = loc1;
     while (esLocalizador(cursor) && (cursor != loc2)){
       cursor = siguiente(cursor, cad);
     }
-    res=esLocalizador(cursor);
-    assert(!res || localizadorEnCadena(loc2,cad));
+    laPropiaSolucion=esLocalizador(cursor);
+    assert(!laPropiaSolucion || localizadorEnCadena(loc2,cad));
 	
   }
   
-  return res;
+  return laPropiaSolucion;
 }
 
 TCadena insertarSegmentoDespues(TCadena sgm, TLocalizador loc, TCadena cad){
@@ -231,16 +231,16 @@ TCadena insertarSegmentoDespues(TCadena sgm, TLocalizador loc, TCadena cad){
 }
 
 TCadena copiarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad){
-	TCadena res=crearCadena();
+	TCadena laPropiaSolucion=crearCadena();
 	if(!esVaciaCadena(cad)){
 		TLocalizador loc=desde;
 		while(loc!=siguiente(hasta,cad)){
 			TInfo inf=copiaInfo(loc->dato);
-			insertarAlFinal(inf,res);
+			insertarAlFinal(inf,laPropiaSolucion);
 			loc=siguiente(loc, cad);
 		}
 	}
-	return res;
+	return laPropiaSolucion;
 }
 
 TCadena borrarSegmento(TLocalizador desde, TLocalizador hasta, TCadena cad){
@@ -311,14 +311,14 @@ TLocalizador anteriorClave(nat clave, TLocalizador loc, TCadena cad){
 
 
 TLocalizador menorEnCadena(TLocalizador loc, TCadena cad){
-	TLocalizador res=loc;
+	TLocalizador laPropiaSolucion=loc;
 	while(esLocalizador(siguiente(loc,cad))){
 		loc=siguiente(loc,cad);
-		if(natInfo(infoCadena(loc,cad))<natInfo(infoCadena(res,cad))){
-			res=loc;
+		if(natInfo(infoCadena(loc,cad))<natInfo(infoCadena(laPropiaSolucion,cad))){
+			laPropiaSolucion=loc;
 		}
 	}
-	return res;
+	return laPropiaSolucion;
 }
 
 

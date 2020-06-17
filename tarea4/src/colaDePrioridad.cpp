@@ -36,36 +36,36 @@ nat rangoCP(TColaDePrioridad cp){
 }
 
 
- static nat funcionAuxiliarFiltradoAscendente1(TColaDePrioridad &h, nat pos){
+ static nat funcionAuxiliarFiltradoAscendente1(TColaDePrioridad &alturita, nat pos){
   nat valorRetornado = 0;
-  TInfo cambiar = h->array[pos];
-  while ((pos>1) && (realInfo(h->array[pos/2])> realInfo(cambiar))){
-    h->array[pos] = h->array[pos/2];
-    h->posiciones[natInfo(h->array[pos/2])] = pos;
+  TInfo cambiar = alturita->array[pos];
+  while ((pos>1) && (realInfo(alturita->array[pos/2])> realInfo(cambiar))){
+    alturita->array[pos] = alturita->array[pos/2];
+    alturita->posiciones[natInfo(alturita->array[pos/2])] = pos;
     pos = pos/2;
   }
-  h->array[pos] = cambiar;
+  alturita->array[pos] = cambiar;
   valorRetornado = pos;
   return valorRetornado;
 }
 
 
-static void funcionAuxiliarFiltradoDescendente(TColaDePrioridad &h, nat n, nat pos){
+static void funcionAuxiliarFiltradoDescendente(TColaDePrioridad &alturita, nat n, nat pos){
   bool salir = false;
-  TInfo cambiar = h->array[h->tope-1];
+  TInfo cambiar = alturita->array[alturita->tope-1];
   while(!salir && 2*pos<= n){
     nat hijo = 2*pos;
-    if ((hijo+1 <= n) && (realInfo(h->array[hijo+1]) < realInfo(h->array[hijo]))){
+    if ((hijo+1 <= n) && (realInfo(alturita->array[hijo+1]) < realInfo(alturita->array[hijo]))){
       hijo = hijo+1;
     }
-    if (realInfo(h->array[hijo]) < realInfo(cambiar)){
-      h->array[pos] = h->array[hijo];
-      h->posiciones[natInfo(h->array[pos])] = pos;
+    if (realInfo(alturita->array[hijo]) < realInfo(cambiar)){
+      alturita->array[pos] = alturita->array[hijo];
+      alturita->posiciones[natInfo(alturita->array[pos])] = pos;
       pos = hijo;
     }
     else salir = true;	
   }
-  h->array[pos] = cambiar;
+  alturita->array[pos] = cambiar;
 }
 
 TColaDePrioridad insertarEnCP(nat elem, double valor, TColaDePrioridad cp){

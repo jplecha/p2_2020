@@ -14,11 +14,7 @@ struct repMap{
   nat M;
   nat cant;
 };
-/*
-  Crea un 'TMapping' vacío (sin elementos) de asociaciones nat -> double.
-  Podrá haber hasta M asociaciones.
-  El tiempo de ejecución en el peor caso es O(M).
- */
+
 TMapping crearMap(nat M){
 	nat iterador;
     if (M < 1)
@@ -33,12 +29,6 @@ TMapping crearMap(nat M){
     return map;
 }
 
-/*
-  Inserta en 'map' la asociación entre 'clave' y 'valor'.
-  Precondición: !estaLlenoMap(map) y !existeAsociacionEnMap(clave, map).
-  Devuelve 'map'.
-  El tiempo de ejecución en el peor caso es O(1).
- */
 TMapping asociarEnMap(nat clave, double valor, TMapping map){
 	
 	TInfo newElemento=crearInfo(clave,valor);
@@ -48,14 +38,6 @@ TMapping asociarEnMap(nat clave, double valor, TMapping map){
     return map;
 }
 
-/*
-  Elimina de 'map' la asociación correspondiente a 'clave' y libera la
-  menoria  asignada a mantener esa asociación.
-  Precondición: existeAsociacionenMap(clave, h).
-  Devuelve 'map'.
-  El 'TMapping' resultado comparte memoria con el parámetro'.
-  El tiempo de ejecución es O(1) en promedio.
- */
 TMapping desasociarEnMap(nat clave, TMapping map){
   nat pos=clave % map->M;
   TLocalizador loc=inicioCadena(map->cadena[pos]);
@@ -67,11 +49,7 @@ TMapping desasociarEnMap(nat clave, TMapping map){
   return map;
 }
 
-/*
-  Devuelve 'true' si y solo si en 'map' hay una asociación correspondiente
-  a 'clave'.
-  El tiempo de ejecución es O(1) en promedio.
- */
+
 bool existeAsociacionEnMap(nat clave, TMapping map){
 	nat pos=clave % map->M;
 	TLocalizador loc=inicioCadena(map->cadena[pos]);
@@ -82,11 +60,7 @@ bool existeAsociacionEnMap(nat clave, TMapping map){
 	return esLocalizador(loc);
 }
 
-/*
-  Devuelve el valor correspondiente a la asociacion de 'clave' en 'h'.
-  Precondición: existeAsociacionenMap(clave, h).
-  El tiempo de ejecución es O(1) en promedio.
- */
+
 double valorEnMap(nat clave, TMapping map){
   nat pos=clave % map->M;
 	TLocalizador loc=inicioCadena(map->cadena[pos]);
@@ -97,24 +71,19 @@ double valorEnMap(nat clave, TMapping map){
 	return realInfo(infoCadena(loc, map->cadena[pos]));
 }
 
-/*
-  Devuelve 'true' si y solo si 'map' tiene 'M' elementos, siendo 'M' el
-  parámetro pasado en crearMap.
-  El tiempo de ejecución es O(1).
- */
+
 bool estaLlenoMap(TMapping map){
 	return map->M==map->cant;
 }
 
-/*
-  Libera la memoria asignada a 'map' y todos sus elementos.
-  El tiempo de ejecución en el peor caso es O(M), siendo 'M' el parámetro
-  pasado en crearMap.
- */
+
 void liberarMap(TMapping map){
-	for (nat i= 0; i < (map->M); i++) {
-            liberarCadena(map->cadena[i]);
-    }
+	nat i=0;
+	while (i<map->M){
+		liberarCadena(map->cadena[i]);
+		i++;
+	}
+	
     delete[] map->cadena;
     delete map;
 }

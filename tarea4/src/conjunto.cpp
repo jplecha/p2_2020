@@ -150,9 +150,9 @@ nat cardinalidad(TConjunto c){
 
 
 TConjunto arregloAConjunto(nat *elems, nat n){
-	TConjunto res = crearConjunto();
-	res->arbol = arregloAAvl(elems, n);
-	return res;
+	TConjunto laPropiaSolucion = crearConjunto();
+	laPropiaSolucion->arbol = arregloAAvl(elems, n);
+	return laPropiaSolucion;
 }
 
 

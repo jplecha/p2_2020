@@ -84,12 +84,12 @@ bool pertenece(nat elem, TCadena cad){
 
 bool estaOrdenadaPorNaturales(TCadena cad){
 	TLocalizador loc1=inicioCadena(cad);
-	bool res=true;
+	bool laPropiaSolucion=true;
 	nat max=0;
 	if(!esVaciaCadena(cad)) {
-		while(esLocalizador(loc1) && res){
+		while(esLocalizador(loc1) && laPropiaSolucion){
 			if(natInfo(infoCadena(loc1,cad))<max){
-				res=false;
+				laPropiaSolucion=false;
 			}else{
 				max=natInfo(infoCadena(loc1,cad));
 				loc1=siguiente(loc1,cad);
@@ -97,7 +97,7 @@ bool estaOrdenadaPorNaturales(TCadena cad){
 		}
 			
 	}
-	return res;
+	return laPropiaSolucion;
 }
 
 
@@ -136,18 +136,18 @@ bool hayNatsRepetidos(TCadena cad){
 
 bool sonIgualesCadena(TCadena c1, TCadena c2){
 	TLocalizador loc1=inicioCadena(c1), loc2=inicioCadena(c2);
-	bool res=true;
+	bool laPropiaSolucion=true;
 	TInfo info1,info2;
-	while(esLocalizador(loc1) && esLocalizador(loc2) && res){
+	while(esLocalizador(loc1) && esLocalizador(loc2) && laPropiaSolucion){
 		info1=infoCadena(loc1,c1), info2=infoCadena(loc2,c2);
 		if((natInfo(info1)==natInfo(info2)) && (realInfo(info1)==realInfo(info2))){
 			loc1=siguiente(loc1,c1);
 			loc2=siguiente(loc2,c2);
 		}else{
-			res=false;
+			laPropiaSolucion=false;
 		}
 	}
-	return res && !esLocalizador(loc1) && !esLocalizador(loc2);
+	return laPropiaSolucion && !esLocalizador(loc1) && !esLocalizador(loc2);
 }
 
 TCadena concatenar(TCadena c1, TCadena c2){
@@ -195,20 +195,20 @@ TCadena cambiarTodos(nat original, nat newElemento, TCadena cad){
 
 
 TCadena subCadena(nat menor, nat mayor, TCadena cad){
-	TCadena res=crearCadena();
+	TCadena laPropiaSolucion=crearCadena();
 	TLocalizador loc=inicioCadena(cad);
 	if(longitud(cad)==1) {
-		insertarAlFinal(copiaInfo(infoCadena(loc,cad)),res);
+		insertarAlFinal(copiaInfo(infoCadena(loc,cad)),laPropiaSolucion);
 	}else{
 		
 	while(esLocalizador(loc) && natInfo(infoCadena(loc,cad))<=mayor){
 		if(natInfo(infoCadena(loc,cad))>=menor){
-			insertarAlFinal(copiaInfo(infoCadena(loc,cad)),res);
+			insertarAlFinal(copiaInfo(infoCadena(loc,cad)),laPropiaSolucion);
 		}
 		loc=siguiente(loc,cad);
 	}
 	}
-	return res;
+	return laPropiaSolucion;
 }
 
 
