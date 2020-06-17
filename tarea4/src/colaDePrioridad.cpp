@@ -11,7 +11,7 @@ struct repCP {
     TInfo *array;
 	nat tope;
 	nat N;
-	nat *posiciones;
+	int *posiciones;
 };
 
 
@@ -21,11 +21,11 @@ TColaDePrioridad crearCP(nat N){
 	coso->tope = 1;
 	coso->N = N;
 	coso->array = new TInfo[N+1];
-	coso->posiciones = new nat[N + 1];
+	coso->posiciones = new int[N + 1];
 	for(nat i = 1; i<N+1;i++)
 		coso->array[i] = NULL;
 	for(nat i = 0; i<N+1;i++)
-	coso->posiciones[i] = 0;
+	coso->posiciones[i] = -1;
 	return coso;
 }
 
@@ -91,14 +91,14 @@ return natInfo(cp->array[1]);
 TColaDePrioridad eliminarPrioritario(TColaDePrioridad cp){
   nat agrega = natInfo(cp->array[1]);
   liberarInfo(cp->array[1]);
-  cp->posiciones[agrega] = 0;
+  cp->posiciones[agrega] = -1;
   funcionAuxiliarFiltradoDescendente(cp, cp->tope-1, 1);
   cp->tope = cp->tope-1;
   return cp;
 }
 
 bool estaEnCP(nat elem, TColaDePrioridad cp){
-	return cp->posiciones[elem] != 0;
+	return cp->posiciones[elem] != -1;
 }
 
 
@@ -126,7 +126,8 @@ TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
   TInfo newElemento = crearInfo(elem,valor);
   cp->array[i] = newElemento;
   if( i == 1){
-    funcionAuxiliarFiltradoDescendente(cp,i,cp->tope);
+	  cp=eliminarPrioritario(cp);
+	  cp=insertarEnCP(elem,valor,cp);
   }else if(realInfo(cp->array[i]) >= realInfo(cp->array[cp->posiciones[i/2]])){
     funcionAuxiliarFiltradoDescendente(cp,i,cp->tope);
   }else {
