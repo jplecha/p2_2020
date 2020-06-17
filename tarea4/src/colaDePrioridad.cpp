@@ -106,51 +106,22 @@ double prioridad(nat elem, TColaDePrioridad cp){
 	return realInfo(cp->array[cp->posiciones[elem]]);
 }
 
- static void funcionAuxiliarFiltradoAscendente2(TColaDePrioridad &c, nat pos){
- if((pos > 1)){
-		if(realInfo(c->array[pos/2]) > realInfo(c->array[pos])){
-   
-			c->posiciones[natInfo(c->array[pos])]= pos/2;
-			c->posiciones[natInfo(c->array[pos/2])]= pos;
-			TInfo aux = c->array[pos/2];
-			c->array[pos/2] = c->array[pos];
-			c->array[pos]= aux;
-			funcionAuxiliarFiltradoAscendente2(c,pos/2);
-		}
- }
-}
 
 TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
   nat i = cp->posiciones[elem];
-  
- 
-  
- 
-  if( i == 1){
-	  cp=eliminarPrioritario(cp);	  
-	  cp=insertarEnCP(elem,valor,cp);	  
-  }else {
-	  double padre;
-	  if(i%2 == 0){
-	  
-	  padre=realInfo(cp->array[i/2]);
-  }else {
-	  
-	  padre=realInfo(cp->array[(i-1)/2]);
-		}
+  if( i != 1){
 	  liberarInfo(cp->array[i]);
-	  TInfo newElemento = crearInfo(elem,valor);
-	  cp->array[i] = newElemento;
-	  
-		  if(valor < padre){
+	  cp->array[i] = crearInfo(elem,valor);
+		  if(valor < realInfo(cp->array[i/2])){
 			nat res;
 			res=funcionAuxiliarFiltradoAscendente1(cp,i);
 			cp->posiciones[elem]=res;
-			
 		  }else{
 			funcionAuxiliarFiltradoDescendente(cp,i,cp->tope-1);
-		  }
-	  
+		  }	  
+  }else {
+	  cp=eliminarPrioritario(cp);	  
+	  cp=insertarEnCP(elem,valor,cp);
   }
   
   return cp;
