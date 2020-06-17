@@ -19,17 +19,17 @@ TBinario crearBinario(){
 	return NULL;
 }
 
-static nat maximo(nat n1, nat n2){
+static nat elMayorDe(nat n1, nat n2){
 	return (n1 >= n2) ? n1 : n2;
 }
 
-static void auxInsertar(TInfo i, TBinario &b){
+static void funcionAuxiliarParaInsertar(TInfo i, TBinario &b){
   if (b!=NULL){
     if (natInfo(b->dato)>natInfo(i)){
-     auxInsertar(i, b->izq);
+     funcionAuxiliarParaInsertar(i, b->izq);
     }
     else {
-     auxInsertar(i, b->der);
+     funcionAuxiliarParaInsertar(i, b->der);
    }
   }else {
     b = new repBinario;
@@ -41,7 +41,7 @@ static void auxInsertar(TInfo i, TBinario &b){
 }
 
 TBinario insertarEnBinario(TInfo i, TBinario b){
-  auxInsertar(i,b);
+  funcionAuxiliarParaInsertar(i,b);
   return b;	
 }
 
@@ -97,10 +97,10 @@ TBinario removerDeBinario(nat elem, TBinario b){
   return b;
 }
 
-static TBinario liberarBin(TBinario &b){
+static TBinario funcionAuxiliarParaLiberarBinario(TBinario &b){
 	if(b!=NULL){
-		b->izq = liberarBin(b->izq);
-		b->der= liberarBin(b->der);
+		b->izq = funcionAuxiliarParaLiberarBinario(b->izq);
+		b->der= funcionAuxiliarParaLiberarBinario(b->der);
 		liberarInfo(b->dato);
 		delete b;
 		b= NULL;
@@ -109,7 +109,7 @@ static TBinario liberarBin(TBinario &b){
 }
 
 void liberarBinario(TBinario b){
-	liberarBin(b);
+	funcionAuxiliarParaLiberarBinario(b);
 	delete(b);
 }
 
@@ -173,7 +173,7 @@ TBinario buscarSubarbol(nat elem, TBinario b){
 
 nat alturaBinario(TBinario b){
 	if(esVacioBinario(b)) return 0;
-	else return 1 + maximo(alturaBinario(b->der), alturaBinario(b->izq));	
+	else return 1 + elMayorDe(alturaBinario(b->der), alturaBinario(b->izq));	
 }
 
 nat cantidadBinario(TBinario b){
@@ -200,19 +200,19 @@ double sumaUltimosPositivos(nat i, TBinario b){
    return suma_ultimos_positivos_aux(i,b);
 }
 
-static TCadena linealization(TBinario b, TCadena res){
+static TCadena funcionAuxiliarParaLinealizacion(TBinario b, TCadena res){
 	if(b){
-		res=linealization(b->izq,res);
+		res=funcionAuxiliarParaLinealizacion(b->izq,res);
 		TInfo copia=copiaInfo(b->dato);
 		res=insertarAlFinal(copia,res);
-		res=linealization(b->der,res);
+		res=funcionAuxiliarParaLinealizacion(b->der,res);
 	}
 	return res;
 }
 
 TCadena linealizacion(TBinario b){
 	TCadena res = crearCadena();
-	return linealization(b,res);
+	return funcionAuxiliarParaLinealizacion(b,res);
 }
 
  static bool existe(TBinario b, int cota){
@@ -258,9 +258,9 @@ TBinario menores(double cota, TBinario b){
         }else return NULL;	
 } 
  
- static void auxImp(TBinario z, int level){
+ static void funcionAuxiliarParaImprimir(TBinario z, int level){
 	if(!esVacioBinario(z)){
-		auxImp(z->der, level + 1);
+		funcionAuxiliarParaImprimir(z->der, level + 1);
 		int i=0;
 		while (i<level){
 			printf("-");
@@ -269,11 +269,11 @@ TBinario menores(double cota, TBinario b){
 		char* linternaverde = infoATexto(z->dato);
 		printf("%s\n", linternaverde);
 		delete[] linternaverde;
-		auxImp(z->izq, level+1);
+		funcionAuxiliarParaImprimir(z->izq, level+1);
 	}
 }
 
 void imprimirBinario(TBinario b){
 	printf("\n");
-	auxImp(b, 0);
+	funcionAuxiliarParaImprimir(b, 0);
 }

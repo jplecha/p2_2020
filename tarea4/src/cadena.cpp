@@ -138,16 +138,16 @@ TCadena insertarAlFinal(TInfo i, TCadena cad){
 }
 
 TCadena insertarAntes(TInfo i, TLocalizador loc, TCadena cad){
-	nodo *nuevo=new nodo;
-	nuevo->dato=i;
-	nuevo->anterior=loc->anterior;
-	nuevo->siguiente=loc;
+	nodo *newElemento=new nodo;
+	newElemento->dato=i;
+	newElemento->anterior=loc->anterior;
+	newElemento->siguiente=loc;
 	if(loc->anterior==NULL){
-		cad->inicio=nuevo;
+		cad->inicio=newElemento;
 	}else{
-		loc->anterior->siguiente=nuevo;
+		loc->anterior->siguiente=newElemento;
 	}
-	loc->anterior=nuevo;
+	loc->anterior=newElemento;
 	return cad;
 }
 

@@ -1,4 +1,4 @@
-/*5213903*/
+//52139037
 #include "../include/cadena.h"
 #include "../include/info.h"
 #include "../include/avl.h"
@@ -41,9 +41,9 @@ TMapping crearMap(nat M){
  */
 TMapping asociarEnMap(nat clave, double valor, TMapping map){
 	
-	TInfo nuevo=crearInfo(clave,valor);
+	TInfo newElemento=crearInfo(clave,valor);
 	nat pos= clave % map->M;
-	map->cadena[pos]=insertarAlFinal(nuevo, map->cadena[pos]);
+	map->cadena[pos]=insertarAlFinal(newElemento, map->cadena[pos]);
     map->cant++;
     return map;
 }

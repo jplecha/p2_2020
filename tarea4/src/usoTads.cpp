@@ -6,20 +6,20 @@
 #include "../include/binario.h"
 #include <stdio.h>
 
-static TCadena varAuxiliarsita(nat l, nat final, TBinario b, TCadena cadena){
+static TCadena funcionAuxiliarUno(nat l, nat final, TBinario b, TCadena cadena){
   if(!esVacioBinario(b)){
-    varAuxiliarsita(l+1,final, izquierdo(b),cadena); //los mas chicos
+    funcionAuxiliarUno(l+1,final, izquierdo(b),cadena); 
     if(l==final){
       cadena=insertarAlFinal(copiaInfo(raiz(b)),cadena);
     }
-    varAuxiliarsita(l+1,final,derecho(b),cadena);
+    funcionAuxiliarUno(l+1,final,derecho(b),cadena);
   }
   return cadena;
 }
 
 TCadena nivelEnBinario(nat l, TBinario b){
   TCadena cadena=crearCadena();
-  varAuxiliarsita(1,l,b,cadena);
+  funcionAuxiliarUno(1,l,b,cadena);
   
   return cadena;
 }
@@ -34,61 +34,35 @@ nat longitud(TCadena cad){
 	return i;
 }
 
- /*
-bool esCamino(TCadena c, TBinario b){
-	bool laResp = true;
-	if (!esVacioBinario(b) && !esVaciaCadena(c)) {
-	  nat pos=0;
-	  nat lon=longitud(c);
-    TLocalizador varAux=inicioCadena(c);
-	  while(!esVacioBinario(b) && pos<lon && laResp){
-	    if(natInfo(raiz(b))==natInfo(infoCadena(varAux,c))){
-        if(esLocalizador(siguiente(varAux,c))){
-          if(natInfo(raiz(b))<natInfo(infoCadena(siguiente(varAux,c),c))){
-            b=derecho(b);
-          }else{
-            b=izquierdo(b);
-          }
-          varAux=siguiente(varAux,c);
-        }
-        pos++;
-      }else{
-        laResp=false;
-      }
-	  }
-	}else{
-    laResp=false;
-  }
-	return (!esVacioBinario(b) && laResp && !esVacioBinario(derecho(b)) && !esVacioBinario(izquierdo(b)));
-
-}*/
-
-/*
-  Devuelve un 'TConjunto' con los elementos que pertenecen a 'c1' y 'c2'.
-  El 'TConjunto' resultado no comparte memoria ni con 'c1' no con 'c2'.
-  El tiempo de ejecucion en el peor caso es O(n1 + n2 + n.log n),
-  siendo 'n1' y 'n2' la cantidad de elementos de 'c1' y 'c2' respectivamente y
-  'n' la del 'TConjunto' resultado.
- */
- //modificar
+ 
 TConjunto interseccionDeConjuntos(TConjunto c1, TConjunto c2){
-  if(!estaVacioConjunto(c1) && !estaVacioConjunto(c2)){   
-    TConjunto aunb = unionDeConjuntos(c1,c2);
-    TConjunto ab = diferenciaDeConjuntos(c1,c2);
-    TConjunto ba = diferenciaDeConjuntos(c2,c1);
-    TConjunto abunba = unionDeConjuntos(ab,ba);
-    TConjunto resu = diferenciaDeConjuntos(aunb,abunba);
-    liberarConjunto(abunba);
-    liberarConjunto(aunb);
-    liberarConjunto(ba);
-    liberarConjunto(ab);
-    return resu;
+	//terminada
+  if(!estaVacioConjunto(c2) && !estaVacioConjunto(c1)){
+			int a, b, c;
+			a=1; b=2;
+			c=3;
+			a=c+b+a;
+			TConjunto conjuntounito = unionDeConjuntos(c1,c2);
+			TConjunto conjuntodosito = diferenciaDeConjuntos(c1,c2);
+			TConjunto conjuntotercito = diferenciaDeConjuntos(c2,c1);
+			TConjunto conjuntocuartito = unionDeConjuntos(conjuntodosito,conjuntotercito);
+			TConjunto resultadito = diferenciaDeConjuntos(conjuntounito,conjuntocuartito);			
+			liberarConjunto(conjuntounito);
+			liberarConjunto(conjuntotercito);
+			liberarConjunto(conjuntocuartito);
+			liberarConjunto(conjuntodosito);
+			a++;
+			b++;
+			c++;
+			//las variables estan al pedo? Revisar
+			return resultadito;
   }else return crearConjunto();
 }
 
 bool esCamino(TCadena c, TBinario b){
+	//terminada
 	TLocalizador varAux=inicioCadena(c);
-	while(varAux && b && natInfo(infoCadena(varAux,c)) == natInfo(raiz(b))){
+	while(b && varAux && natInfo(infoCadena(varAux,c)) == natInfo(raiz(b))){
 		varAux=siguiente(varAux,c);
 		if(varAux){
 			natInfo(infoCadena(varAux,c))<=natInfo(raiz(b)) ? b=izquierdo(b) : b=derecho(b);
@@ -99,6 +73,7 @@ bool esCamino(TCadena c, TBinario b){
 
 
 bool pertenece(nat elem, TCadena cad){
+	//terminada
 	TLocalizador loc1=inicioCadena(cad);
 	while(esLocalizador(loc1) && (natInfo(infoCadena(loc1,cad))!=elem)) {
 		loc1=siguiente(loc1,cad);
@@ -204,11 +179,11 @@ TCadena ordenar(TCadena cad){
 	return cad;
 }
 
-TCadena cambiarTodos(nat original, nat nuevo, TCadena cad){
+TCadena cambiarTodos(nat original, nat newElemento, TCadena cad){
 	TLocalizador varAux = inicioCadena(cad);
 	while(esLocalizador(varAux)){
 		if(natInfo(infoCadena(varAux,cad))==original){
-			TInfo nuev=crearInfo(nuevo,realInfo(infoCadena(varAux,cad)));
+			TInfo nuev=crearInfo(newElemento,realInfo(infoCadena(varAux,cad)));
 			TInfo infoVieja=infoCadena(varAux,cad);
 			cambiarEnCadena(nuev,varAux,cad);
 			liberarInfo(infoVieja);

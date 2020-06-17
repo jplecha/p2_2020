@@ -1,4 +1,4 @@
-/*5213903*/
+//52139037
 #include "../include/cadena.h"
 #include "../include/info.h"
 #include "../include/avl.h"
@@ -36,7 +36,7 @@ nat rangoCP(TColaDePrioridad cp){
 }
 
 
- static nat filtradoAscendente(TColaDePrioridad &h, nat pos){
+ static nat funcionAuxiliarFiltradoAscendente1(TColaDePrioridad &h, nat pos){
   nat valorRetornado = 0;
   TInfo cambiar = h->array[pos];
   while ((pos>1) && (realInfo(h->array[pos/2])> realInfo(cambiar))){
@@ -50,7 +50,7 @@ nat rangoCP(TColaDePrioridad cp){
 }
 
 
-static void filtrado_descendente(TColaDePrioridad &h, nat n, nat pos){
+static void funcionAuxiliarFiltradoDescendente(TColaDePrioridad &h, nat n, nat pos){
   bool salir = false;
   TInfo cambiar = h->array[h->tope-1];
   while(!salir && 2*pos<= n){
@@ -72,7 +72,7 @@ TColaDePrioridad insertarEnCP(nat elem, double valor, TColaDePrioridad cp){
 	cp->tope = cp->tope+1;
 	TInfo i=crearInfo(elem,valor);
 	cp->array[cp->tope-1] = i;
-	nat pos = filtradoAscendente(cp , cp->tope-1 );
+	nat pos = funcionAuxiliarFiltradoAscendente1(cp , cp->tope-1 );
 	int agrega = natInfo(i);
 	cp->posiciones[agrega] = pos;
 	return cp;
@@ -92,7 +92,7 @@ TColaDePrioridad eliminarPrioritario(TColaDePrioridad cp){
   nat agrega = natInfo(cp->array[1]);
   liberarInfo(cp->array[1]);
   cp->posiciones[agrega] = 0;
-  filtrado_descendente(cp, cp->tope-1, 1);
+  funcionAuxiliarFiltradoDescendente(cp, cp->tope-1, 1);
   cp->tope = cp->tope-1;
   return cp;
 }
@@ -106,40 +106,48 @@ double prioridad(nat elem, TColaDePrioridad cp){
 	return realInfo(cp->array[cp->posiciones[elem]]);
 }
 
- //modificar
- static void filtradoAscendente2(TColaDePrioridad &c, nat pos){
-  if((pos > 1) && (realInfo(c->array[pos/2]) > realInfo(c->array[pos]))){
-    c->posiciones[natInfo(c->array[pos/2])]= pos;
-    c->posiciones[natInfo(c->array[pos])]= pos/2;
-    TInfo aux = c->array[pos/2];
-    c->array[pos/2] = c->array[pos];
-    c->array[pos]= aux;
-    filtradoAscendente2(c,pos/2);
-  }
+ static void funcionAuxiliarFiltradoAscendente2(TColaDePrioridad &c, nat pos){
+ if((pos > 1)){
+		if(realInfo(c->array[pos/2]) > realInfo(c->array[pos])){
+   
+			c->posiciones[natInfo(c->array[pos])]= pos/2;
+			c->posiciones[natInfo(c->array[pos/2])]= pos;
+			TInfo aux = c->array[pos/2];
+			c->array[pos/2] = c->array[pos];
+			c->array[pos]= aux;
+			funcionAuxiliarFiltradoAscendente2(c,pos/2);
+		}
+ }
 }
 
 TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
- 
-  int i = cp->posiciones[elem];
+  nat i = cp->posiciones[elem];
   liberarInfo(cp->array[i]);
-  TInfo nuevo = crearInfo(elem,valor);
-  cp->array[i] = nuevo;
+  TInfo newElemento = crearInfo(elem,valor);
+  cp->array[i] = newElemento;
   if( i == 1){
-    filtrado_descendente(cp,i,cp->tope);
-  }else if(realInfo(cp->array[i]) < realInfo(cp->array[cp->posiciones[i/2]])){
-    filtradoAscendente2(cp,i);
-  }else filtrado_descendente(cp,i,cp->tope);
+    funcionAuxiliarFiltradoDescendente(cp,i,cp->tope);
+  }else if(realInfo(cp->array[i]) >= realInfo(cp->array[cp->posiciones[i/2]])){
+    funcionAuxiliarFiltradoDescendente(cp,i,cp->tope);
+  }else {
+	  funcionAuxiliarFiltradoAscendente2(cp,i);
+  }
   return cp;
 }
 
 
 void liberarCP(TColaDePrioridad cp){
-	 if (cp != NULL){
-    if (cp->tope >1)
-      for(nat i = 1; i< cp->tope; i++)
-        liberarInfo(cp->array[i]);
-    delete [] cp->array;
-    delete [] cp->posiciones;
-  }
+	if (cp != NULL){
+		if (cp->tope >1){
+			nat i=1;
+			while(i<cp->tope){
+				liberarInfo(cp->array[i]);
+				i++;
+			}
+		}
+		
+		delete [] cp->posiciones;
+		delete [] cp->array;
+	}
   delete cp;
 }

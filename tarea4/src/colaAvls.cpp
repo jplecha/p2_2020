@@ -1,3 +1,4 @@
+//52139037
 #include "../include/avl.h"
 #include "../include/utils.h"
 #include "../include/info.h"
@@ -21,9 +22,9 @@ struct repColaAvls {
   El tiempo de ejecución en el peor caso es O(1).
  */
 TColaAvls crearColaAvls(){
-	TColaAvls nuevo = new repColaAvls;
-	nuevo->primero = nuevo->ultimo = NULL;
-	return nuevo;
+	TColaAvls newElemento = new repColaAvls;
+	newElemento->primero = newElemento->ultimo = NULL;
+	return newElemento;
 }
 
 /*
