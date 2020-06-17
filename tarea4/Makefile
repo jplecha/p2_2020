@@ -45,7 +45,7 @@ EXT = cpp
 CC = g++ # gcc -x c 
 LD = g++ # gcc
 # opciones de compilación
-CCFLAGS = -Wall -Werror -I$(HDIR) -g # -DNDEBUG
+CCFLAGS = -Wall -Werror -I$(HDIR) -g -DNDEBUG
 # -DNDEBUG
 # se agrega esta opción para que las llamadas a assert no hagan nada.
 
@@ -74,7 +74,7 @@ $(EJECUTABLE): $(ODIR)/$(PRINCIPAL).o $(OS)
 	$(LD) $(CCFLAGS) $^ -o $@
 
 # casos de prueba
-CASOS = 00 01 02 03 04 05 06 07 08 09 10 11 200 301 302 t-ultimos t-avl t-map t-cp
+CASOS = 00 01 02 03 04 05 06 07 08 09 10 11 200 301 302 A B C D E F t-ultimos t-avl t-map t-cp
 
 
 # cadena de archivos, con directorio y extensión

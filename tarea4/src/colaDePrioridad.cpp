@@ -122,17 +122,37 @@ double prioridad(nat elem, TColaDePrioridad cp){
 
 TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
   nat i = cp->posiciones[elem];
-  liberarInfo(cp->array[i]);
-  TInfo newElemento = crearInfo(elem,valor);
-  cp->array[i] = newElemento;
+  
+ 
+  
+ 
   if( i == 1){
-	  cp=eliminarPrioritario(cp);
-	  cp=insertarEnCP(elem,valor,cp);
-  }else if(realInfo(cp->array[i]) >= realInfo(cp->array[cp->posiciones[i/2]])){
-    funcionAuxiliarFiltradoDescendente(cp,i,cp->tope);
+	  cp=eliminarPrioritario(cp);	  
+	  cp=insertarEnCP(elem,valor,cp);	  
   }else {
-	  funcionAuxiliarFiltradoAscendente2(cp,i);
+	  double padre;
+	  if(i%2 == 0){
+	  
+	  padre=realInfo(cp->array[i/2]);
+  }else {
+	  
+	  padre=realInfo(cp->array[(i-1)/2]);
+		}
+	  liberarInfo(cp->array[i]);
+	  TInfo newElemento = crearInfo(elem,valor);
+	  cp->array[i] = newElemento;
+	  
+		  if(valor < padre){
+			nat res;
+			res=funcionAuxiliarFiltradoAscendente1(cp,i);
+			cp->posiciones[elem]=res;
+			
+		  }else{
+			funcionAuxiliarFiltradoDescendente(cp,i,cp->tope-1);
+		  }
+	  
   }
+  
   return cp;
 }
 

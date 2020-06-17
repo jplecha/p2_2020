@@ -397,7 +397,6 @@ int main() {
       conj = unionDeConjuntos(alias, a);
       liberarConjunto(alias);
       liberarConjunto(a);
-
       printf("Union.\n");
 
     } else if (!strcmp(nom_comando, "diferenciaDeConjuntos")) {
@@ -413,7 +412,6 @@ int main() {
       conj = diferenciaDeConjuntos(alias, a);
       liberarConjunto(alias);
       liberarConjunto(a);
-
       printf("Diferencia.\n");
 
     } else if (!strcmp(nom_comando, "iteradorDeConjunto")) {
@@ -767,7 +765,6 @@ int main() {
       conj = interseccionDeConjuntos(alias, a);
       liberarConjunto(alias);
       liberarConjunto(a);
-
       printf("Intersección.\n");
 
     } else if (!strcmp(nom_comando, "esCamino")) {
