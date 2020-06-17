@@ -86,6 +86,7 @@ valorEnMap 17
 valorEnMap 18
 valorEnMap 19
 # actualizaciones que aumentan
+estaVaciaCP
 insertarEnCP 3 3.0
 prioritario
 insertarEnCP 4 4.0
@@ -100,6 +101,8 @@ actualizarEnCP 3 -1
 prioritario
 actualizarEnCP 1 5.0
 actualizarEnCP 2 7.0
+prioritario
+prioridad 3
 actualizarEnCP 3 6
 prioritario
 Fin

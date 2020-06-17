@@ -39,7 +39,7 @@ nat rangoCP(TColaDePrioridad cp){
  static nat filtradoAscendente(TColaDePrioridad &h, nat pos){
   nat valorRetornado = 0;
   TInfo cambiar = h->array[pos];
-  while ((pos>1) && (natInfo(h->array[pos/2])> natInfo(cambiar))){
+  while ((pos>1) && (realInfo(h->array[pos/2])> realInfo(cambiar))){
     h->array[pos] = h->array[pos/2];
     h->posiciones[natInfo(h->array[pos/2])] = pos;
     pos = pos/2;
@@ -49,15 +49,16 @@ nat rangoCP(TColaDePrioridad cp){
   return valorRetornado;
 }
 
+
 static void filtrado_descendente(TColaDePrioridad &h, nat n, nat pos){
   bool salir = false;
   TInfo cambiar = h->array[h->tope-1];
   while(!salir && 2*pos<= n){
     nat hijo = 2*pos;
-    if ((hijo+1 <= n) && (natInfo(h->array[hijo+1]) < natInfo(h->array[hijo]))){
+    if ((hijo+1 <= n) && (realInfo(h->array[hijo+1]) < realInfo(h->array[hijo]))){
       hijo = hijo+1;
     }
-    if (natInfo(h->array[hijo]) < natInfo(cambiar)){
+    if (realInfo(h->array[hijo]) < realInfo(cambiar)){
       h->array[pos] = h->array[hijo];
       h->posiciones[natInfo(h->array[pos])] = pos;
       pos = hijo;
@@ -116,25 +117,7 @@ double prioridad(nat elem, TColaDePrioridad cp){
     filtradoAscendente2(c,pos/2);
   }
 }
-static void filtrado_descendente2(TColaDePrioridad &cp,nat pos,nat tope){
-  TInfo aux = cp->array[pos];
-  bool bandera = false;
-  while((2*pos <= tope) && (!bandera)){
-    nat hijo = 2*pos;
-    if((hijo+1 <= tope) && (realInfo(cp->array[hijo+1]) < realInfo(cp->array[hijo]))){
-      hijo ++;
-    }
-    cp->posiciones[natInfo(cp->array[pos*2])] = cp->posiciones[natInfo(cp->array[pos*2])] / 2;
-    cp->posiciones[natInfo(cp->array[pos])] = cp->posiciones[natInfo(cp->array[pos])] * 2;
-    if(realInfo(aux) > realInfo(cp->array[hijo])){
-      cp->array[pos] = cp->array[hijo];
-      pos= hijo;
-    }else{
-      bandera = true ;
-    }
-  }
-  cp->array[pos]= aux;
-  }
+
 TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
  
   int i = cp->posiciones[elem];
@@ -142,10 +125,10 @@ TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
   TInfo nuevo = crearInfo(elem,valor);
   cp->array[i] = nuevo;
   if( i == 1){
-    filtrado_descendente2(cp,cp->tope,i);
+    filtrado_descendente(cp,i,cp->tope);
   }else if(realInfo(cp->array[i]) < realInfo(cp->array[cp->posiciones[i/2]])){
     filtradoAscendente2(cp,i);
-  }else filtrado_descendente2(cp,cp->tope,i);
+  }else filtrado_descendente(cp,i,cp->tope);
   return cp;
 }
 
