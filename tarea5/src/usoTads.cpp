@@ -3,7 +3,9 @@
 #include "../include/info.h"
 #include "../include/utils.h"
 #include "../include/usoTads.h"
-#include "../include/binario.h"
+#include "../include/colaDePrioridad.h"
+#include "../include/avl.h"
+#include "../include/float.h"
 #include <stdio.h>
 
 static TCadena funcionAuxiliarUno(nat l, nat final, TBinario b, TCadena cadena){
@@ -50,8 +52,29 @@ nat longitud(TCadena cad){
         desde 'v' hace una llamada recursiva.
    - Devolver el arreglo.
  */
+static void auxiliarAccesibles(ArregloBools &res, nat v, TGrafo g){
+	TIterador aux=vecinos(v,g);
+	res[v]=true;
+	while(estaDefinidaActual(aux)){
+		 if(res[actualEnIterador(aux)]==false)
+			auxiliarAccesibles(res,actualEnIterador(aux),g);
+		 aux=avanzarIterador(aux);
+			
+	}		
+	
+	liberarIterador(aux);
+}
 ArregloBools accesibles(nat v, TGrafo g){
-	return NULL;
+	ArregloBools res=new bool[cantidadVertices(g)+1];
+	for (nat i=0;i<cantidadVertices(g)+1;i++){
+		res[i]=false;
+	}
+	
+	auxiliarAccesibles(res,v,g);
+	
+		
+	return res;
+	
 }
 
 // nueva
@@ -86,7 +109,35 @@ ArregloBools accesibles(nat v, TGrafo g){
 
  */
 ArregloDoubles longitudesCaminosMasCortos(nat v, TGrafo g){
-	return NULL;
+	TColaDePrioridad C=crearCP(cantidadVertices(g)), S=crearCP(cantidadVertices(g));
+	C = insertarEnCP(v,0,C);
+	while(!estaVaciaCP(C)){
+		nat u=prioritario(C);
+		double du= prioridad(u,C);
+		C=eliminarPrioritario(C);
+		S=insertarEnCP(u,du,S);
+		
+		TIterador vec=vecinos(u,g);
+		while(estaDefinidaActual(vec)){
+			 nat w=actualEnIterador(vec);
+			 nat dw=du+distancia(u,w,g);
+			 if(!estaEnCP(w,C)) insertarEnCP(w,dw,C);
+			 else if(!estaEnCP(w,C) && dw < prioridad(w,C)) C=actualizarEnCP(w,dw,C);
+			 vec=avanzarIterador(vec);
+		}		
+	
+		liberarIterador(vec);
+	}
+	ArregloDoubles res=new double[cantidadVertices(g)+1];
+	for(nat i=1;i<=cantidadVertices(g);i++){
+		if(!estaVaciaCP(C)){
+			res[i]=prioridad(prioritario(C),C);
+			C=eliminarPrioritario(C);
+		}else{
+			res[i]=DBL_MAX;
+		}
+	}
+	return res ;
 }
 
 TConjunto interseccionDeConjuntos(TConjunto c1, TConjunto c2){
