@@ -128,6 +128,7 @@ TColaDePrioridad actualizarEnCP(nat elem, double valor, TColaDePrioridad cp){
 }
 
 
+
 void liberarCP(TColaDePrioridad cp){
 	if (cp != NULL){
 		if (cp->tope >1){
@@ -143,3 +144,4 @@ void liberarCP(TColaDePrioridad cp){
 	}
   delete cp;
 }
+

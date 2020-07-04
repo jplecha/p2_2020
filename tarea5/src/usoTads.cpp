@@ -106,37 +106,68 @@ ArregloBools accesibles(nat v, TGrafo g){
    - Para cada vétice 'u' que no pertenece a 'S' se inserta en 'S' el par
      (u, infinito).
    - Devolver 'S'.
-
  */
+
+ static TLocalizador menorEnCadena2(TLocalizador loc, TCadena cad){
+	TLocalizador laPropiaSolucion=loc;
+	while(esLocalizador(siguiente(loc,cad))){
+		loc=siguiente(loc,cad);
+		if(realInfo(infoCadena(loc,cad))<realInfo(infoCadena(laPropiaSolucion,cad))){
+			laPropiaSolucion=loc;
+		}
+	}
+	return laPropiaSolucion;
+}
+static TLocalizador pertenece2(nat elem, TCadena cad){
+	//terminada
+	TLocalizador loc1=inicioCadena(cad);
+	while(esLocalizador(loc1) && (natInfo(infoCadena(loc1,cad))!=elem)) {
+		loc1=siguiente(loc1,cad);
+	}
+	return loc1;
+}
 ArregloDoubles longitudesCaminosMasCortos(nat v, TGrafo g){
-	TColaDePrioridad C=crearCP(cantidadVertices(g)), S=crearCP(cantidadVertices(g));
-	C = insertarEnCP(v,0,C);
-	while(!estaVaciaCP(C)){
-		nat u=prioritario(C);
-		double du= prioridad(u,C);
-		C=eliminarPrioritario(C);
-		S=insertarEnCP(u,du,S);
-		
+	TCadena C=crearCadena(), S=crearCadena();
+	C = insertarAlFinal(crearInfo(v,0.0), C);
+	while(!esVaciaCadena(C)){
+		nat u= natInfo(infoCadena(menorEnCadena2(inicioCadena(C),C),C));
+		double du=realInfo(infoCadena(menorEnCadena2(inicioCadena(C),C),C));
+		C=removerDeCadena(menorEnCadena2(inicioCadena(C),C),C);
+		S=insertarAlFinal(crearInfo(u,du),S);
 		TIterador vec=vecinos(u,g);
 		while(estaDefinidaActual(vec)){
-			 nat w=actualEnIterador(vec);
-			 nat dw=du+distancia(u,w,g);
-			 if(!estaEnCP(w,C)) insertarEnCP(w,dw,C);
-			 else if(!estaEnCP(w,C) && dw < prioridad(w,C)) C=actualizarEnCP(w,dw,C);
-			 vec=avanzarIterador(vec);
+			if(!pertenece(actualEnIterador(vec),S)){
+				 nat w=actualEnIterador(vec);
+				 double dw=du+distancia(u,w,g);
+				 if(!pertenece(w,C)) C=insertarAlFinal(crearInfo(w,dw),C);
+				 else{
+					 TLocalizador loc=pertenece2(w,C);
+					  if(dw < realInfo(infoCadena(loc,C))) {
+						C=removerDeCadena(loc, C);
+						C=insertarAlFinal(crearInfo(w,dw),C);
+					  }
+				 }
+				
+			}
+			
+			
+			
+			vec=avanzarIterador(vec);
 		}		
-	
 		liberarIterador(vec);
 	}
 	ArregloDoubles res=new double[cantidadVertices(g)+1];
 	for(nat i=1;i<=cantidadVertices(g);i++){
-		if(!estaVaciaCP(C)){
-			res[i]=prioridad(prioritario(C),C);
-			C=eliminarPrioritario(C);
-		}else{
 			res[i]=DBL_MAX;
-		}
 	}
+	
+	TLocalizador loc1=inicioCadena(S);
+	while(esLocalizador(loc1)){
+		res[natInfo(infoCadena(loc1, S))]=realInfo(infoCadena(loc1, S));
+		loc1=siguiente(loc1,S);
+	}
+	liberarCadena(S);
+	liberarCadena(C);
 	return res ;
 }
 

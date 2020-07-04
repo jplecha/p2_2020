@@ -80,33 +80,20 @@ bool hayMParejas(TGrafo g){
   El tiempo de ejecución es en peor caso O(max{log n1, log n2}), siendo 'n1' y
   'n2' la cantidad de vecinos de 'v1' y 'v2' respectivamente.
  */
- static nat minmax(nat tipo, nat v1, nat v2){
-	 nat res;
-	 if(tipo==0) {
-		 if(v1>v2) res=v1;
-		 else res=v2;
-	 }else{
-		 if(v1<v2) res=v1;
-		 else res=v2;
-	 }
-	 return res;
+ static nat max(nat v1, nat v2){
+	 return v1>v2? v1: v2;
  }
  
+ static nat min(nat v1, nat v2){
+	 return v2>v1? v1: v2;
+ }
+ 
+ 
 TGrafo hacerVecinos(nat v1, nat v2, double d, TGrafo g){
-	nat clave= (minmax(1,v1,v2)-1)*g->N+(minmax(0,v1,v2)-1);
+	nat clave= (min(v1,v2)-1)*g->N+(max(v1,v2)-1);
     g->aristas=asociarEnMap(clave,d,g->aristas);
-   // if(estaVacioAvl(g->vecinos[v1])) g->vecinos[v1]=insertarEnAvl(v1,g->vecinos[v1]);
-    //if(estaVacioAvl(g->vecinos[v2])) g->vecinos[v2]=insertarEnAvl(v1,g->vecinos[v2]);
     g->vecinos[v1]=insertarEnAvl(v2,g->vecinos[v1]);
     g->vecinos[v2]=insertarEnAvl(v1,g->vecinos[v2]);
-    /*if(g->vertices[v1]==false) {
-		g->vertices[v1]=true;
-		g->cantVertices++;
-	}
-    if(g->vertices[v2]==false){ 
-		g->vertices[v2]=true;
-		g->cantVertices++;
-	}*/	
 	return g;
 }
 /*
@@ -115,7 +102,7 @@ TGrafo hacerVecinos(nat v1, nat v2, double d, TGrafo g){
   El tiempo de ejecución es O(1) en promedio.
  */
 bool sonVecinos(nat v1, nat v2, TGrafo g){
-	return existeAsociacionEnMap((minmax(1,v1,v2)-1)*g->N+(minmax(0,v1,v2)-1),g->aristas);
+	return existeAsociacionEnMap((min(v1,v2)-1)*g->N+(max(v1,v2)-1),g->aristas);
 }
 /*
   Devuelve la distancia entre 'v1' y 'v2'.
@@ -124,7 +111,7 @@ bool sonVecinos(nat v1, nat v2, TGrafo g){
   El tiempo de ejecución es O(1) en promedio.
  */
 double distancia(nat v1, nat v2, TGrafo g){
-	return valorEnMap((minmax(1,v1,v2)-1)*g->N+(minmax(0,v1,v2)-1),g->aristas);
+	return valorEnMap((min(v1,v2)-1)*g->N+(max(v1,v2)-1),g->aristas);
 }
 /*
   Devuelve un 'TIterador' con los vecinos de 'v' ordenados de manera creciente.

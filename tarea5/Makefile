@@ -97,7 +97,7 @@ $(TESTDIR)/%.sal:$(TESTDIR)/%.in
 $(TESTDIR)/t-ultimos.sal:$(TESTDIR)/t-ultimos.in
 	-timeout 5 ./$(EJECUTABLE) < $< > $@ 2>&1
 $(TESTDIR)/t-avl.sal:$(TESTDIR)/t-avl.in
-	-timeout 5 ./$(EJECUTABLE) < $< > $@ 2>&1
+	-timeout 10 ./$(EJECUTABLE) < $< > $@ 2>&1
 $(TESTDIR)/t-map.sal:$(TESTDIR)/t-map.in
 	-timeout 5 ./$(EJECUTABLE) < $< > $@ 2>&1
 $(TESTDIR)/t-cp.sal:$(TESTDIR)/t-cp.in
